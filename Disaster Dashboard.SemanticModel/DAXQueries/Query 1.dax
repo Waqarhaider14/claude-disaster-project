@@ -1,0 +1,5 @@
+// Welcome to DAX query view! Learn more about DAX queries at https://aka.ms/dax-queries.
+// Right-click on tables, columns, or measures in the data pane to access quick queries, or ask Copilot for help writing DAX.
+EVALUATE
+VAR Previous_YEAR = DATEADD('dw dim_date'[full_date], -1, YEAR)
+RETURN Previous_YEAR

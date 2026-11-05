@@ -1,0 +1,37 @@
+table 'dw dim_wild_fire'
+	lineageTag: b6ea3f99-2519-4186-9a78-e554962ab732
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6467caa8-2f5b-406e-b9af-a25362fd6e55
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column burned_area
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: fe30734f-85d6-4c3c-9748-d1757ab0ab31
+		summarizeBy: none
+		sourceColumn: burned_area
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_wild_fire' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_wild_fire = Source{[Schema="dw",Item="dim_wild_fire"]}[Data]
+				in
+				    dw_dim_wild_fire
+
+	annotation PBI_ResultType = Table
+

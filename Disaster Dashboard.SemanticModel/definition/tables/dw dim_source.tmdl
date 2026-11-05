@@ -1,0 +1,39 @@
+table 'dw dim_source'
+	lineageTag: 3edc43f9-6caa-4f78-abb2-89392af0dcd0
+
+	column source_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 7cbf0e54-4c9f-43e2-8825-55504aef028b
+		summarizeBy: none
+		sourceColumn: source_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_system
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: fe79a225-7d12-4c35-8556-17ca23ae9c19
+		summarizeBy: none
+		sourceColumn: source_system
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_source' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_source = Source{[Schema="dw",Item="dim_source"]}[Data]
+				in
+				    dw_dim_source
+
+	annotation PBI_ResultType = Table
+

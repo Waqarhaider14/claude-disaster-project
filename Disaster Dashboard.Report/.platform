@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Disaster Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "8fae50b7-736c-4830-84ca-d40f37e169a4"
+  }
+}

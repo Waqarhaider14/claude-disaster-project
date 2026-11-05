@@ -1,0 +1,25 @@
+table timeframe
+	lineageTag: 14d78552-9e16-4640-bdcb-7f7e3074e16e
+
+	column timeframe
+		dataType: string
+		lineageTag: c553436a-3164-4771-a4a7-ece72c28e83c
+		summarizeBy: none
+		sourceColumn: timeframe
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition timeframe = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WigxxUYrViVbyBdGxAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "timeframe"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+

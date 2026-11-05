@@ -1,0 +1,106 @@
+table 'dw dim_alert'
+	lineageTag: a77df6a4-9e19-4b28-8215-923b022efdcd
+
+	column alert_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c8cf87aa-b373-48f2-88d6-29b2b5d2170b
+		summarizeBy: none
+		sourceColumn: alert_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column alert_level
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 5b2a7a6b-daf7-4c69-bb52-d29c1710fb42
+		summarizeBy: none
+		sourceColumn: alert_level
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column alert_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a77a386e-fabe-4a9e-a942-5b0f0c2bea86
+		summarizeBy: none
+		sourceColumn: alert_score
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column episode_alert_level
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3b676ec0-71fc-4206-8f2f-63f57dc567f5
+		summarizeBy: none
+		sourceColumn: episode_alert_level
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column episode_alert_score
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: be1a9b37-5335-4721-99ed-1c91ed126ebe
+		summarizeBy: none
+		sourceColumn: episode_alert_score
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column impact_level
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6f03f435-dec1-4e16-b59b-d8835b967b8b
+		summarizeBy: none
+		sourceColumn: impact_level
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column impact_category
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 69079ff5-1de6-4c7e-82b1-9b07fcdba7a2
+		summarizeBy: none
+		sourceColumn: impact_category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column RescuePoisition = SWITCH('dw dim_alert'[episode_alert_level], "Green", "Low", "Orange", "Medium", "Red" , "High", "Need To Check")
+		lineageTag: 3b9b051e-f61f-4dc1-b1bd-7cfca2537ca3
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_alert' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_alert = Source{[Schema="dw",Item="dim_alert"]}[Data]
+				in
+				    dw_dim_alert
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,50 @@
+table 'Disaster Date Granularity'
+	lineageTag: 7d32948b-9059-4ac3-a7ef-f5cd8d6df399
+
+	column 'Disaster Date Granularity'
+		lineageTag: 9c613a44-4177-46db-8336-443400ebd927
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Disaster Date Granularity Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Disaster Date Granularity Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Disaster Date Granularity Fields'
+		isHidden
+		lineageTag: 2a4580a1-33a3-4444-9a25-497ac2caf869
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Disaster Date Granularity Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Disaster Date Granularity Order'
+		isHidden
+		formatString: 0
+		lineageTag: 1865e346-26b4-43e0-847b-d372a2a6e9c1
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Disaster Date Granularity' = calculated
+		mode: import
+		source =
+				{
+				    ("Year", NAMEOF('dw dim_date'[full_date].[Year]), 0),
+				    ("Quarter", NAMEOF('dw dim_date'[full_date].[Quarter]), 1),
+				    ("Month", NAMEOF('dw dim_date'[full_date].[Month]), 2),
+				    ("Day", NAMEOF('dw dim_date'[full_date].[Day]), 3)
+				}
+
+	annotation PBI_Id = 4406427ece1840a5ad5f17c61a96799a
+

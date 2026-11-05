@@ -1,0 +1,81 @@
+relationship 9f0c6845-0571-2929-0ce9-6b1f0737aebd
+	fromColumn: 'dw fact_disaster_event'.alert_id
+	toColumn: 'dw dim_alert'.alert_id
+
+relationship c25cdee7-a9cf-a083-1e88-773f2d7ee310
+	fromColumn: 'dw fact_disaster_event'.event_type_id
+	toColumn: 'dw dim_event_type'.event_type_id
+
+relationship 7753a093-93a3-567d-85ee-5eeae7c89cd5
+	fromColumn: 'dw fact_disaster_event'.source_id
+	toColumn: 'dw dim_source'.source_id
+
+relationship 6b7ebafb-0703-b1f9-b835-2108fdf8be12
+	fromColumn: 'dw fact_disaster_event'.location_id
+	toColumn: 'dw dim_location'.location_id
+
+relationship 1d481d36-9349-6cdc-43ac-407424ed884d
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_drought'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship 659800ef-3e70-8d47-7daf-3e721e426a45
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_wild_fire'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship 61535abf-1c13-f036-15f9-6c0af8eff340
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_earthquake'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship 308afe9c-d20a-3586-b362-7345059f0e7f
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_flood'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship db50eafc-ad85-1846-29d7-29cb33b5dbce
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_tropical_cyclone'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship ac739cb0-9c24-47b7-d45e-b12832beb796
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'dw dim_volcano'.disaster_event_id
+	toColumn: 'dw fact_disaster_event'.disaster_event_id
+
+relationship 2ca7ef7e-1d2b-43f9-94f3-6923db1681e7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: TableCalenderAuto.Date
+	toColumn: LocalDateTable_151fe795-f0fa-417c-b053-7f1aa2328a04.Date
+
+relationship c00da124-8159-4809-95c0-ae62d2939cb6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: TableCalenderAuto(7).Date
+	toColumn: LocalDateTable_b540b992-2be7-46e0-924a-96126b56b1ac.Date
+
+relationship bdbd308a-f19e-4627-b834-2bf7c7b9af92
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'dw dim_date'.full_date
+	toColumn: LocalDateTable_5da44a7a-be96-4188-adda-766063be38fe.Date
+
+relationship 39fc97ac-6c71-3752-72a1-ab412b0b90f0
+	isActive: false
+	fromColumn: 'dw fact_disaster_event'.end_date_id
+	toColumn: 'dw dim_date'.date_id
+
+relationship b9e4fcf0-c6f4-51ce-6fa9-0acb2ac12936
+	toCardinality: many
+	fromColumn: 'dw dim_location'.country_location_name
+	toColumn: Table.location
+
+relationship f9a1cd8e-04c3-4aa5-1070-49b0f2a4f70e
+	fromColumn: 'dw fact_disaster_event'.start_date_id
+	toColumn: 'dw dim_date'.date_id
+

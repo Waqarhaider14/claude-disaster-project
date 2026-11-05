@@ -1,0 +1,18 @@
+cultureInfo en-US
+
+	linguisticMetadata =
+			{
+			  "Version": "1.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "dw_dim_event_type.event_type": {
+			      "Binding": {
+			        "ConceptualEntity": "dw dim_event_type",
+			        "ConceptualProperty": "event_type"
+			      },
+			      "State": "Generated"
+			    }
+			  }
+			}
+		contentType: json
+

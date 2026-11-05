@@ -1,0 +1,63 @@
+table 'dw dim_event_type'
+	lineageTag: 967acd11-f951-4143-bce8-3deaab47f447
+
+	column event_type_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d157f550-7f09-4fcc-9805-d5ccf3d72d28
+		summarizeBy: none
+		sourceColumn: event_type_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 87d77ef1-55e8-46fd-aab4-007beb0fcff4
+		summarizeBy: none
+		sourceColumn: event_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column RelatedTable = COUNTX(RELATEDTABLE('dw fact_disaster_event'), 'dw fact_disaster_event'[disaster_event_id])
+		formatString: 0
+		lineageTag: 9abe269a-e34b-43fb-9a59-90832486ec0b
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type_slicer =
+			SWITCH(
+			     'dw dim_event_type'[event_type],
+			     "DR", "Drought",
+			     "EQ", "Earthquake",
+			     "FL", "Flood",
+			     "TC", "Tropical Cyclone",
+			     "VO", "Volcano Eruption",
+			     "Wf", "Wild Fire"
+			)
+		lineageTag: 317a07a0-5b91-4e57-bc5f-5a6cf849045c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_event_type' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_event_type = Source{[Schema="dw",Item="dim_event_type"]}[Data]
+				in
+				    dw_dim_event_type
+
+	annotation PBI_ResultType = Table
+

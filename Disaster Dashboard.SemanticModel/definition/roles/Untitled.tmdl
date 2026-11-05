@@ -1,0 +1,7 @@
+role Untitled
+	modelPermission: read
+
+	tablePermission 'dw dim_location' = [country_location_name] == "Pakistan"
+
+	annotation PBI_Id = e2cf9046a1d44e9d8a3dc44f87745805
+

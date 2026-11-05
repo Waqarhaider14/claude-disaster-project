@@ -1,0 +1,12 @@
+role Country_role
+	modelPermission: read
+
+	tablePermission 'dw dim_location' = ```
+			'dw dim_location'[country_location_name] IN 
+			CALCULATETABLE(
+			    VALUES('dw dim_location'[country_location_name]),
+			    'Table'[email] = USERPRINCIPALNAME())
+			```
+
+	annotation PBI_Id = 7902a24c7e7b457281926c278060bc2d
+

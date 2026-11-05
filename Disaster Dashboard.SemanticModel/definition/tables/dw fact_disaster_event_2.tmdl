@@ -1,0 +1,115 @@
+table 'dw fact_disaster_event_2'
+	lineageTag: 92a390d5-bdc1-4137-ad29-0cfd0be441f4
+
+	measure DisasterRecord2 = COUNTROWS('dw fact_disaster_event')
+		formatString: 0
+		lineageTag: 2216bdbd-b720-421c-aa09-67e62a069f3e
+
+	column fact_id
+		dataType: int64
+		formatString: 0
+		lineageTag: a6948b54-d9d9-458c-a42a-86142a248bd5
+		summarizeBy: sum
+		sourceColumn: fact_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column disaster_event_id
+		dataType: string
+		lineageTag: 4b1d0156-52b0-44a2-8cb2-5b66193c4699
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 8325f9fd-66e1-478b-b86e-146c53cc98c2
+		summarizeBy: sum
+		sourceColumn: event_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 83d8c3ca-75a2-4f98-8551-c3225181b9fa
+		summarizeBy: sum
+		sourceColumn: location_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column alert_id
+		dataType: int64
+		formatString: 0
+		lineageTag: faa1bea8-dc3f-4814-b3ae-a0798b39dc15
+		summarizeBy: sum
+		sourceColumn: alert_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1ebc44a5-8643-4c97-b256-bf9ed1d447ca
+		summarizeBy: sum
+		sourceColumn: source_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c818ee9b-0dc9-4df1-96e1-83e6777ae514
+		summarizeBy: sum
+		sourceColumn: start_date_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_date_id
+		dataType: int64
+		formatString: 0
+		lineageTag: f854247e-605c-4563-aeb4-188ec1e05d7e
+		summarizeBy: sum
+		sourceColumn: end_date_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity
+		dataType: double
+		lineageTag: 0d0effa2-73f8-4936-80b2-974ac4f4a764
+		summarizeBy: sum
+		sourceColumn: severity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column duration_days
+		dataType: int64
+		formatString: 0
+		lineageTag: e624f2ff-618f-47bd-b23e-d65f28f9c48d
+		summarizeBy: sum
+		sourceColumn: duration_days
+
+		annotation SummarizationSetBy = Automatic
+
+	column population_effected
+		dataType: int64
+		formatString: 0
+		lineageTag: 44acbee9-d5dc-4b2d-b4c2-722aa632be99
+		summarizeBy: sum
+		sourceColumn: population_effected
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw fact_disaster_event_2' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost:5432", "dw_disaster_events"),
+				    dw_fact_disaster_event_2 = Source{[Schema="dw",Item="fact_disaster_event_2"]}[Data]
+				in
+				    dw_fact_disaster_event_2
+

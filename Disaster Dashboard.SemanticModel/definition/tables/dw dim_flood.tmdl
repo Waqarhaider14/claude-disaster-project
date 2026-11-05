@@ -1,0 +1,61 @@
+table 'dw dim_flood'
+	lineageTag: 8253cc6d-6069-4f0f-959f-3652b4522761
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 66cafc93-0d0b-4b80-88fb-ef7e9fb42602
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column gdacs_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: df90fa11-a884-4f4f-859a-4e8856ffab68
+		summarizeBy: none
+		sourceColumn: gdacs_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column death
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ee262b5b-f949-4b76-96ff-272a21820def
+		summarizeBy: sum
+		sourceColumn: death
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column displaced
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f0dbcfbe-a6be-457e-b269-0fb93645c872
+		summarizeBy: sum
+		sourceColumn: displaced
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_flood' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_flood = Source{[Schema="dw",Item="dim_flood"]}[Data]
+				in
+				    dw_dim_flood
+
+	annotation PBI_ResultType = Table
+

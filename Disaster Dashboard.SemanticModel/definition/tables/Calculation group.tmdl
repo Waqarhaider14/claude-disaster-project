@@ -1,0 +1,174 @@
+table 'Calculation group'
+	lineageTag: 26358fd7-ad6f-497a-9036-f566b982c6eb
+
+	calculationGroup
+
+		calculationItem YTD =
+				CALCULATE(SELECTEDMEASURE(),
+				DATESYTD('dw dim_date'[full_date].[Date])
+				)
+
+			formatStringDefinition = "total: ###"
+
+		calculationItem PM =
+				CALCULATE(SELECTEDMEASURE(),
+				PREVIOUSMONTH('dw dim_date'[full_date].[Date])
+				)
+
+			formatStringDefinition = "$##"
+
+	measure DisasterCount = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
+		formatString: 0
+		lineageTag: 20f145a8-47c2-4e60-8d87-e84eb0e5ab98
+
+	measure 'DisasterRecord YTD' =
+			
+			TOTALYTD(
+			    [DisasterRecord],
+			    'dw dim_date'[full_date]
+			)
+		formatString: 0
+		lineageTag: 27c0e959-49f5-4c07-88ea-355a8e501eb2
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "YearToDate"
+				}
+
+	measure 'Disaster Count PY' =
+			CALCULATE(
+			            [DisasterRecord],
+			            SAMEPERIODLASTYEAR('dw dim_date'[full_date]))
+		formatString: 0
+		lineageTag: fbd8880e-9580-44ac-abf7-2a2ca84643f0
+
+	measure PYTD = ```
+			
+			VAR CurrentYearCount =
+			    [DisasterRecord]
+			
+			VAR PreviousYearCount =
+			    CALCULATE(
+			        [DisasterRecord],
+			        SAMEPERIODLASTYEAR(DATESYTD('dw dim_date'[full_date])
+			    ))
+			
+			VAR Difference =
+			    CurrentYearCount - PreviousYearCount
+			
+			VAR _format = 
+			SWITCH(
+			    TRUE(),
+			    Difference > 0, UNICHAR(11165) & " " & FORMAT(Difference, "#,##0"),
+			    Difference < 0, UNICHAR(11167) & " " & FORMAT(Difference, "#,##0"),
+			    FORMAT(Difference, "#,##0")
+			)
+			
+			RETURN
+			    _format
+			
+			```
+		lineageTag: 8fb915eb-632a-4b99-a50d-4bda406a0b6f
+
+	measure 'PYTD color format' = ```
+			
+			VAR CurrentYearCount =
+			    [DisasterRecord]
+			
+			VAR PreviousYearCount =
+			    CALCULATE(
+			        [DisasterRecord],
+			        SAMEPERIODLASTYEAR(DATESYTD('dw dim_date'[full_date])
+			    ))
+			
+			VAR Difference =
+			    CurrentYearCount - PreviousYearCount
+			
+			VAR _format = SWITCH(
+			    TRUE(),
+			    Difference > 0, "Red",
+			    Difference < 0, "Green",
+			    "Grey"
+			)
+			RETURN _format
+			
+			```
+		lineageTag: 004f28fb-e489-4f5d-a485-0c46ecbd8885
+
+	measure Select_YTD_MTD = ```
+			
+			VAR _select_tf = SELECTEDVALUE( timeframe[timeframe], "YTD")
+			VAR _select_value = 
+			SWITCH(
+			    _select_tf,
+			    "YTD", [_YTD],
+			    "MTD", [_MTD]
+			)
+			
+			RETURN _select_value
+			```
+		formatString: 0
+		lineageTag: e532f7f9-b5e1-454d-bd25-a21e889e58fd
+
+	measure Select_YTD_MTD_DATE = ```
+			
+			VAR _select_tf = SELECTEDVALUE( timeframe[timeframe], "YTD")
+			VAR _select_value_date = 
+			SWITCH(
+			    _select_tf,
+			    "YTD", [YTD_label],
+			    "MTD", [MTD_label]
+			)
+			
+			RETURN _select_value_date 
+			```
+		lineageTag: b4acc5e4-9879-42b2-8980-0ecb310ae7a8
+
+	measure Select_PYTD_PMTD = ```
+			
+			VAR _select_tf = SELECTEDVALUE( timeframe[timeframe], "YTD")
+			VAR _select_value_pypm = 
+			SWITCH(
+			    _select_tf,
+			    "YTD", [_PYTD],
+			    "MTD", [_PMTD]
+			)
+			
+			RETURN _select_value_pypm
+			```
+		formatString: 0
+		lineageTag: ae35e8c6-fbe6-4270-b0ee-721dd8de2915
+
+	measure Select_PYTD_PMTD_DATE = ```
+			
+			VAR _select_tf = SELECTEDVALUE( timeframe[timeframe], "YTD")
+			VAR _select_value_date = 
+			SWITCH(
+			    _select_tf,
+			    "YTD", [PYTD_label],
+			    "MTD", [PMTD_label]
+			)
+			
+			RETURN _select_value_date 
+			```
+		lineageTag: 68b22794-6c4b-40c5-a61d-382d2495afd4
+
+	column 'Calculation group column'
+		dataType: string
+		lineageTag: 9e71de29-b91f-4ec5-b215-67ac558360bf
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b08b216-849f-4f0b-acc7-ccbc8431ec2c
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

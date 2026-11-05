@@ -1,0 +1,284 @@
+table 'Disaster Count Analysis'
+	lineageTag: f7d4fbf6-d518-4dde-823e-8f7a61c4f515
+
+	measure _YTD = ```
+			
+			TOTALYTD([DisasterRecord], 'dw dim_date'[full_date])
+			
+			```
+		formatString: 0
+		lineageTag: f625d6bb-4eaa-4ee0-a84e-85ca27b87606
+
+	measure YTD_label = ```
+			
+			VAR _latest_date = MAX('dw dim_date'[full_date])
+			
+			VAR _start_date = DATE(
+			                        YEAR(_latest_date),
+			                        1,
+			                        1
+			)
+			
+			RETURN "YTD as of:" & " " & FORMAT(_start_date, "dd MMM YYYY") & " " & " - " & " " & FORMAT(_latest_date, "dd MMM YYYY")
+			
+			
+			
+			
+			
+			
+			
+			
+			```
+		lineageTag: 5bd6f6f3-8839-4864-9d0f-28772970bc4b
+
+	measure _MTD = ```
+			
+			TOTALMTD([DisasterRecord], 'dw dim_date'[full_date])
+			
+			```
+		formatString: 0
+		lineageTag: 278ab32f-0942-420f-bddd-ceb68bf35d9c
+
+	measure MTD_label = ```
+			
+			VAR _latest_date = MAX('dw dim_date'[full_date])
+			
+			VAR _start_date = DATE(
+			                        YEAR(_latest_date),
+			                        MONTH(_latest_date),
+			                        1
+			)
+			
+			RETURN "MTD as of:" & " " & FORMAT(_start_date, "dd MMM YYYY") & " " & " - " & " " & FORMAT(_latest_date, "dd MMM YYYY")
+			
+			
+			
+			
+			
+			
+			
+			
+			```
+		lineageTag: f4982761-a28e-484e-8467-60e32e4e3dcd
+
+	measure _PYTD = ```
+			VAR PreviousYearCount =
+			    CALCULATE(
+			        [DisasterRecord],
+			        SAMEPERIODLASTYEAR(DATESYTD('dw dim_date'[full_date])
+			    )) 
+			
+			    RETURN PreviousYearCount
+			/* "vs" & " " & "PYTD" & "(" & PreviousYearCount & ")" */
+			```
+		formatString: 0
+		lineageTag: 9195c5de-2088-4946-ac4f-5fe488c11d17
+
+	measure _PMTD = ```
+			
+			
+			VAR _LastDate =
+			    MAX('dw dim_date'[full_date])
+			
+			VAR _CurrentMonthStart =
+			    DATE(
+			        YEAR(_LastDate),
+			        MONTH(_LastDate),
+			        1
+			    )
+			
+			VAR _PreviousMonthStart =
+			    EDATE(
+			        _CurrentMonthStart,
+			        -1
+			    )
+			
+			VAR _PreviousMonthEnd =
+			    EDATE(
+			        _LastDate,
+			        -1
+			    ) 
+			
+			RETURN 
+			
+			CALCULATE(
+			        [DisasterRecord],
+			        DATESBETWEEN(
+			            'dw dim_date'[full_date], 
+			             _PreviousMonthStart,
+			             _PreviousMonthEnd)
+			             )
+			```
+		formatString: 0
+		lineageTag: 9cbca9b1-41da-4479-a0e4-4fd72c85d9d5
+
+	measure PMTD_label = ```
+			
+			
+			VAR _LastDate =
+			    MAX('dw dim_date'[full_date])
+			
+			VAR _CurrentMonthStart =
+			    DATE(
+			        YEAR(_LastDate),
+			        MONTH(_LastDate),
+			        1
+			    )
+			
+			VAR _PreviousMonthStart =
+			    EDATE(
+			        _CurrentMonthStart,
+			        -1
+			    )
+			
+			VAR _PreviousMonthEnd =
+			    EDATE(
+			        _LastDate,
+			        -1
+			    ) 
+			
+			RETURN "PMTD as of:" & " " &FORMAT(_PreviousMonthStart, "dd MMM YYYY") & " " & " - " & " " & FORMAT(_PreviousMonthEnd, "dd MMM YYYY")
+			```
+		lineageTag: 54b18999-58f3-4687-9831-c72c403f35d7
+
+	measure PYTD_label =
+			
+			VAR _latest_date = MAX('dw dim_date'[full_date])
+			
+			VAR _PreviousYearStart =
+			    DATE(
+			        YEAR(_latest_date) - 1,
+			        1,
+			        1
+			    )
+			
+			VAR _PreviousYearEnd =
+			    EDATE(
+			        _latest_date,
+			        -12
+			    )
+			
+			RETURN "PYTD as of:" & " " & FORMAT(_PreviousYearStart, "dd MMM YYYY") & " " & " - " & " " & FORMAT(_PreviousYearEnd, "dd MMM YYYY")
+		lineageTag: 60c0dc16-16c1-492c-bb3b-5c172a1cf387
+
+	measure Select_YTD_MTD_Label = ```
+			
+			VAR _select_tf = SELECTEDVALUE( timeframe[timeframe], "YTD")
+			VAR _select_value_date = 
+			SWITCH(
+			    _select_tf,
+			    "YTD", "Year-to-Date",
+			    "MTD", "Month-to-Date"
+			)
+			
+			RETURN _select_value_date 
+			```
+		lineageTag: b3174129-2b24-424e-aadc-0863285e2be1
+
+	measure Difference_YTD_PYTD = ```
+			
+			
+			VAR difference_YTD_PYTD = 
+			            [_YTD] - [_PYTD]
+			
+			VAR difference_MTD_MYTD = 
+			            [_MTD] - [_PMTD]
+			
+			VAR _select_value = 
+			    SELECTEDVALUE(timeframe[timeframe], "YTD")
+			
+			VAR _select_difference = SWITCH(
+			                            _select_value,
+			                            "YTD", difference_YTD_PYTD & " " & "vs" & " " & "PYTD" & " " & "(" & [_PYTD] & ")" ,
+			                            "MTD", difference_MTD_MYTD & " " & "vs" & " " & "PMTD" & " " & "(" & [_PMTD] & ")"
+			)
+			
+			RETURN _select_difference & " " 
+			```
+		lineageTag: 33ef646e-2b20-4022-9f86-92ed7b4ac5d3
+
+	measure Difference_YTD_PYTD_Color = ```
+			
+			VAR difference_YTD_PYTD = 
+			            [_YTD] - [_PYTD]
+			
+			VAR difference_MTD_MYTD = 
+			            [_MTD] - [_PMTD]
+			
+			VAR _select_value = 
+			    SELECTEDVALUE(timeframe[timeframe], "YTD")
+			
+			VAR _select_difference = SWITCH(
+			                            _select_value,
+			                            "YTD", difference_YTD_PYTD,
+			                            "MTD", difference_MTD_MYTD
+			)
+			
+			VAR _format = SWITCH(
+			                    TRUE(),
+			                    _select_difference < 0, "Green",
+			                    _select_difference > 0, "Red"
+			)
+			RETURN _format
+			```
+		lineageTag: 947a20a9-a6bc-4929-847d-838d47ed346b
+
+	measure Select_Full_date_title = ```
+			
+			VAR _select_tf = SELECTEDVALUE( 'Disaster Date Granularity'[Disaster Date Granularity Order], 0)
+			VAR _select_value_date = 
+			SWITCH(
+			    _select_tf,
+			    0, "Disaster By Year",
+			    1, "Disaster By Quarter",
+			    2, "Disaster By Month",
+			    3, "Disaster By Day"
+			)
+			
+			RETURN _select_value_date 
+			```
+		lineageTag: 69938f34-fcd9-4c79-ba6e-7fa7ba42c983
+
+	column 'Disaster Count Analysis'
+		lineageTag: c9629e4f-923d-4adb-82a2-7c04d286c17b
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Disaster Count Analysis Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Disaster Count Analysis Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Disaster Count Analysis Fields'
+		lineageTag: 9d0f047d-5797-40f1-8058-7a8d843a3eb8
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Disaster Count Analysis Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Disaster Count Analysis Order'
+		formatString: 0
+		lineageTag: dec59481-5549-4ada-b16e-e18c9fe078eb
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Disaster Count Analysis' = calculated
+		mode: import
+		source =
+				{
+				    ("country_location_name", NAMEOF('dw dim_location'[country_location_name]), 0),
+				    ("event_type", NAMEOF('dw dim_event_type'[event_type]), 1)
+				}
+
+	annotation PBI_Id = 2e0ad9f9ba9f4706b3d95fbe6abc54bb
+

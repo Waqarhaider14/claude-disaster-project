@@ -1,0 +1,49 @@
+table 'dw dim_drought'
+	lineageTag: ea293601-75e3-4fbd-8516-67fb11a4a2cf
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: d3cf053e-70c9-4cbf-bd99-97dce4fadefc
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column drought_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9dbc5483-cb64-4c36-8d17-4652b41e8cfe
+		summarizeBy: none
+		sourceColumn: drought_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column effected_area_km2
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3d40d5d7-378d-4af3-9d90-1fa6f0162b1b
+		summarizeBy: sum
+		sourceColumn: effected_area_km2
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_drought' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_drought = Source{[Schema="dw",Item="dim_drought"]}[Data]
+				in
+				    dw_dim_drought
+
+	annotation PBI_ResultType = Table
+

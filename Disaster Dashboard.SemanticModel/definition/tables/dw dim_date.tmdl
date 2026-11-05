@@ -1,0 +1,236 @@
+table 'dw dim_date'
+	lineageTag: 7f2f4062-19eb-4054-9528-414fd3ffe79f
+
+	measure 'vs last year' = ```
+			
+			VAR SelectedYear =
+			    SELECTEDVALUE('dw dim_date'[year])
+			
+			VAR CurrentYearCount =
+			    [DisasterRecord]
+			
+			VAR PreviousYearCount =
+			    CALCULATE(
+			        [DisasterRecord],
+			        REMOVEFILTERS('dw dim_date'),
+			        'dw dim_date'[year] = SelectedYear - 1
+			    )
+			
+			VAR Difference =
+			    CurrentYearCount - PreviousYearCount
+			
+			VAR _format = 
+			SWITCH(
+			    TRUE(),
+			    Difference > 0, UNICHAR(11165) & " " & FORMAT(Difference, "#,##0"),
+			    Difference < 0, UNICHAR(11167) & " " & FORMAT(Difference, "#,##0"),
+			    FORMAT(Difference, "#,##0")
+			)
+			
+			RETURN
+			    IF(
+			        ISBLANK(SelectedYear),
+			        BLANK(),
+			        _format
+			    )
+			```
+		lineageTag: b57b61f0-cb2e-43ae-b1cf-b52972ffef95
+
+		changedProperty = IsHidden
+
+	measure 'Previous Year' =
+			
+			VAR SelectedYear =
+			    SELECTEDVALUE('dw dim_date'[year])
+			RETURN
+			    IF(
+			        NOT ISBLANK(SelectedYear),
+			        SelectedYear - 1
+			    )
+		formatString: 0
+		lineageTag: 610fb663-a947-4a81-b4eb-ca062b8dd1e8
+
+		changedProperty = IsHidden
+
+	measure ColorFormatPYDisaster = ```
+			
+			VAR SelectedYear =
+			    SELECTEDVALUE('dw dim_date'[year])
+			
+			VAR CurrentYearCount =
+			    [DisasterRecord]
+			
+			VAR PreviousYearCount =
+			    CALCULATE(
+			        [DisasterRecord],
+			        REMOVEFILTERS('dw dim_date'),
+			        'dw dim_date'[year] = SelectedYear - 1
+			    )
+			
+			VAR Difference =
+			    CurrentYearCount - PreviousYearCount
+			
+			VAR _format = SWITCH(
+			    TRUE(),
+			    Difference > 0, "Red",
+			    Difference < 0, "Green",
+			    "Grey"
+			)
+			RETURN _format
+			
+			
+			
+			
+			
+			
+			```
+		lineageTag: e54ebdee-6da7-41da-be48-5e5049f2ec85
+
+		changedProperty = IsHidden
+
+	measure DisasterCountPeriodLabel = ```
+			
+			VAR _fromDate = MIN('dw dim_date'[full_date])
+			VAR _toDate = MAX('dw dim_date'[full_date])
+			
+			RETURN
+			
+			 FORMAT(_fromDate, "dd MMM YYYY") & " - " & FORMAT(_toDate, "dd MMM YYYY")
+			
+			
+			
+			
+			
+			
+			```
+		lineageTag: be7d9119-cfc0-4a40-a43a-7f1f95a925a5
+
+		changedProperty = IsHidden
+
+	column date_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3681fa4c-c0d0-4bbe-bc0a-57d6c2ad35b8
+		summarizeBy: none
+		sourceColumn: date_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column full_date
+		dataType: dateTime
+		isNullable: false
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 4033b6ec-66c5-4ab9-b065-79810dded0ae
+		summarizeBy: none
+		sourceColumn: full_date
+
+		variation Variation
+			isDefault
+			relationship: bdbd308a-f19e-4627-b834-2bf7c7b9af92
+			defaultHierarchy: LocalDateTable_5da44a7a-be96-4188-adda-766063be38fe.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5f7c2a21-a5f1-4b7b-9180-4506d89740c4
+		summarizeBy: sum
+		sourceColumn: year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column quarter
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 168206a9-defa-4d78-bb52-617d07d81747
+		summarizeBy: sum
+		sourceColumn: quarter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: b13af438-0ecc-4b1c-a1f6-5c0f2390f44d
+		summarizeBy: sum
+		sourceColumn: month
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: af2f490e-8cf1-4334-919d-ab9581b080d3
+		summarizeBy: none
+		sourceColumn: month_name
+		sortByColumn: month
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column day
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c81f9317-9f6a-4539-892c-eabb80b95cf9
+		summarizeBy: sum
+		sourceColumn: day
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 81b0e0b2-4a26-4c4d-bb3b-75ef604ea94b
+		summarizeBy: sum
+		sourceColumn: day_of_week
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 394c6f20-211b-44f6-b02c-837a498b3470
+		summarizeBy: none
+		sourceColumn: day_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_date' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_date = Source{[Schema="dw",Item="dim_date"]}[Data]
+				in
+				    dw_dim_date
+
+	annotation PBI_ResultType = Table
+

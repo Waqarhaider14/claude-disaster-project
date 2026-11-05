@@ -1,0 +1,48 @@
+table 'dw dim_earthquake'
+	lineageTag: ea5c798c-2ae4-4e2e-ab9c-22338e183b1a
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: a1928565-9161-41a3-84d7-0505ac61e753
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column earthquake_magnitude
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3741d7ae-5677-4cff-bddf-598b52df6e4f
+		summarizeBy: none
+		sourceColumn: earthquake_magnitude
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column depth_km
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 07701e19-e1bc-4537-96ee-55a3f29f1567
+		summarizeBy: none
+		sourceColumn: depth_km
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_earthquake' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_earthquake = Source{[Schema="dw",Item="dim_earthquake"]}[Data]
+				in
+				    dw_dim_earthquake
+
+	annotation PBI_ResultType = Table
+

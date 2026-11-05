@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Disaster Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d5c378f3-3041-4dd2-b006-c7a31edb8000"
+  }
+}

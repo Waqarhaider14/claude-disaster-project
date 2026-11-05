@@ -1,0 +1,70 @@
+table 'dw dim_volcano'
+	lineageTag: 4bc9381a-991b-4276-b90d-21901fa831b9
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 99cea47b-6be8-41f0-b3f5-1febd444276c
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column volcano_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: d0f2613e-8243-44f8-9eaa-c7298ab07c23
+		summarizeBy: none
+		sourceColumn: volcano_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column volcano_number
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3432df55-e790-4096-9a69-99c66ac16792
+		summarizeBy: none
+		sourceColumn: volcano_number
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column volcano_explosivity_index
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c0a921f5-c2d5-420b-8092-9a0dc5851f99
+		summarizeBy: none
+		sourceColumn: volcano_explosivity_index
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column population_exposure_index
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3af29770-ef52-42f4-b6d8-d93d8bcff657
+		summarizeBy: none
+		sourceColumn: population_exposure_index
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_volcano' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_volcano = Source{[Schema="dw",Item="dim_volcano"]}[Data]
+				in
+				    dw_dim_volcano
+
+	annotation PBI_ResultType = Table
+

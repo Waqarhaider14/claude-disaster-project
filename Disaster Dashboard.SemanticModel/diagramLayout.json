@@ -1,0 +1,282 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 242.42424011230469,
+        "y": 357.57575988769531
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1273.4642857142858,
+            "y": 924.04585193452419
+          },
+          "nodeIndex": "dw fact_disaster_event",
+          "nodeLineageTag": "6269e33c-816d-4952-8770-016ce366d4ca",
+          "size": {
+            "height": 318,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1362.2857142857144,
+            "y": 1545.2482328869046
+          },
+          "nodeIndex": "dw dim_alert",
+          "nodeLineageTag": "a77df6a4-9e19-4b28-8215-923b022efdcd",
+          "size": {
+            "height": 291,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 841.30952380952385,
+            "y": 1461.7482328869048
+          },
+          "nodeIndex": "dw dim_date",
+          "nodeLineageTag": "7f2f4062-19eb-4054-9528-414fd3ffe79f",
+          "size": {
+            "height": 314,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 620.5,
+            "y": 337.70061383928589
+          },
+          "nodeIndex": "dw dim_drought",
+          "nodeLineageTag": "ea293601-75e3-4fbd-8516-67fb11a4a2cf",
+          "size": {
+            "height": 170,
+            "width": 234
+          },
+          "zIndex": 20
+        },
+        {
+          "location": {
+            "x": 1421.8333333333335,
+            "y": 308.53394717261926
+          },
+          "nodeIndex": "dw dim_earthquake",
+          "nodeLineageTag": "ea5c798c-2ae4-4e2e-ab9c-22338e183b1a",
+          "size": {
+            "height": 170,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 1758.4761904761906,
+            "y": 1570.0101376488096
+          },
+          "nodeIndex": "dw dim_event_type",
+          "nodeLineageTag": "967acd11-f951-4143-bce8-3deaab47f447",
+          "size": {
+            "height": 146,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 1872.1666666666667,
+            "y": 325.36728050595264
+          },
+          "nodeIndex": "dw dim_flood",
+          "nodeLineageTag": "8253cc6d-6069-4f0f-959f-3652b4522761",
+          "size": {
+            "height": 194,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 2481.8095238095239,
+            "y": 1541.8315662202383
+          },
+          "nodeIndex": "dw dim_location",
+          "nodeLineageTag": "e9218efa-cc7a-4308-869f-68bf2a101a95",
+          "size": {
+            "height": 170,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 2152.5,
+            "y": 1553.7244233630954
+          },
+          "nodeIndex": "dw dim_source",
+          "nodeLineageTag": "3edc43f9-6caa-4f78-abb2-89392af0dcd0",
+          "size": {
+            "height": 146,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 2295.5,
+            "y": 341.03394717261915
+          },
+          "nodeIndex": "dw dim_tropical_cyclone",
+          "nodeLineageTag": "de01d1ca-28ef-4838-8642-db10432be36b",
+          "size": {
+            "height": 218,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 2728.1666666666665,
+            "y": 370.03394717261926
+          },
+          "nodeIndex": "dw dim_volcano",
+          "nodeLineageTag": "4bc9381a-991b-4276-b90d-21901fa831b9",
+          "size": {
+            "height": 218,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 1018.3333333333333,
+            "y": 339.86728050595264
+          },
+          "nodeIndex": "dw dim_wild_fire",
+          "nodeLineageTag": "b6ea3f99-2519-4186-9a78-e554962ab732",
+          "size": {
+            "height": 146,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 143.75,
+            "y": 637.52204241071468
+          },
+          "nodeIndex": "TableCalenderAuto(7)",
+          "nodeLineageTag": "5f27d64f-f4c7-4968-8773-3b7daeee79cc",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 142.5,
+            "y": 853.27204241071468
+          },
+          "nodeIndex": "TableCalenderAuto",
+          "nodeLineageTag": "90990693-dcca-4f1e-8e47-b97e52d37187",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 146.99999999999955,
+            "y": 1085.1887090773812
+          },
+          "nodeIndex": "Calculation group",
+          "nodeLineageTag": "26358fd7-ad6f-497a-9036-f566b982c6eb",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 134.5,
+            "y": 1430.1470424107147
+          },
+          "nodeIndex": "Disaster Count Analysis",
+          "nodeLineageTag": "f7d4fbf6-d518-4dde-823e-8f7a61c4f515",
+          "size": {
+            "height": 175.75,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 130.32142857142844,
+            "y": 1630.1559709821433
+          },
+          "nodeIndex": "timeframe",
+          "nodeLineageTag": "14d78552-9e16-4640-bdcb-7f7e3074e16e",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 2486.3896150134856,
+            "y": 1894.6509239560085
+          },
+          "nodeIndex": "Table",
+          "nodeLineageTag": "1fcfeed8-10c1-4f8a-9344-dd2f8fc0eccc",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 19
+        },
+        {
+          "location": {
+            "x": 141.83333333333348,
+            "y": 1247.9707031250002
+          },
+          "nodeIndex": "Disaster Date Granularity",
+          "nodeLineageTag": "7d32948b-9059-4ac3-a7ef-f5cd8d6df399",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 153.69047619047547,
+            "y": 323.04110572451646
+          },
+          "nodeIndex": "dw fact_disaster_event_2",
+          "nodeLineageTag": "92a390d5-bdc1-4137-ad29-0cfd0be441f4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 60,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": true,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

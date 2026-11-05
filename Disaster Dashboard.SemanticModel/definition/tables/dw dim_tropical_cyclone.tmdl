@@ -1,0 +1,72 @@
+table 'dw dim_tropical_cyclone'
+	lineageTag: de01d1ca-28ef-4838-8642-db10432be36b
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 4f83fbc6-c890-4a16-99b7-3001481af7c0
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column cyclone_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: e99d1c2a-a7c9-4490-a49e-44246e7bba62
+		summarizeBy: none
+		sourceColumn: cyclone_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column maximum_wind_speed
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 388def7e-b9f1-479a-91e8-20474f80181d
+		summarizeBy: none
+		sourceColumn: maximum_wind_speed
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 32b83fd9-f18f-478f-ab61-aa6068ba845b
+		summarizeBy: none
+		sourceColumn: category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column vulnerability
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 30930b0f-fda8-4f63-9bdc-f714e2290ed8
+		summarizeBy: none
+		sourceColumn: vulnerability
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw dim_tropical_cyclone' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_dim_tropical_cyclone = Source{[Schema="dw",Item="dim_tropical_cyclone"]}[Data]
+				in
+				    dw_dim_tropical_cyclone
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

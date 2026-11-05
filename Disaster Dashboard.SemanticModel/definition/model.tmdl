@@ -1,0 +1,45 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dw fact_disaster_event","dw dim_alert","dw dim_date","dw dim_drought","dw dim_earthquake","dw dim_flood","dw dim_event_type","dw dim_location","dw dim_source","dw dim_tropical_cyclone","dw dim_volcano","dw dim_wild_fire","timeframe","Table","dw fact_disaster_event_2"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode","CalcGroup","TMDL-Extension"]
+
+ref table 'dw fact_disaster_event'
+ref table 'dw dim_alert'
+ref table 'dw dim_date'
+ref table 'dw dim_drought'
+ref table 'dw dim_earthquake'
+ref table 'dw dim_flood'
+ref table 'dw dim_event_type'
+ref table 'dw dim_location'
+ref table 'dw dim_source'
+ref table 'dw dim_tropical_cyclone'
+ref table 'dw dim_volcano'
+ref table 'dw dim_wild_fire'
+ref table TableCalenderAuto
+ref table DateTableTemplate_64fca360-0c01-4bc0-a73b-21618e27af40
+ref table LocalDateTable_151fe795-f0fa-417c-b053-7f1aa2328a04
+ref table TableCalenderAuto(7)
+ref table LocalDateTable_b540b992-2be7-46e0-924a-96126b56b1ac
+ref table LocalDateTable_5da44a7a-be96-4188-adda-766063be38fe
+ref table 'Calculation group'
+ref table 'Disaster Count Analysis'
+ref table timeframe
+ref table Table
+ref table 'Disaster Date Granularity'
+ref table 'dw fact_disaster_event_2'
+
+ref role Country_role
+ref role Untitled
+
+ref cultureInfo en-US
+

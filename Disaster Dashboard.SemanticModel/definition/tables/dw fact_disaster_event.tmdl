@@ -1,0 +1,323 @@
+table 'dw fact_disaster_event'
+	lineageTag: 6269e33c-816d-4952-8770-016ce366d4ca
+
+	measure FilterMeasure = COUNTX(FILTER('dw fact_disaster_event','dw fact_disaster_event'[event_type_id] = 17),'dw fact_disaster_event'[disaster_event_id])
+		lineageTag: 3d02efd6-f7f7-4592-9cb3-de1d3d315e90
+
+		formatStringDefinition = "0"
+
+		changedProperty = IsHidden
+
+	measure Calculate = CALCULATE(COUNTROWS('dw fact_disaster_event'),'dw dim_location'[country_location_name] = "India")
+		formatString: 0
+		lineageTag: 10e5fdd8-d213-4f0b-bb3f-ebf0faf4ebd2
+
+		changedProperty = IsHidden
+
+	measure DistinctCount = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
+		lineageTag: 03ba3028-7d01-43c4-a468-6d4008440999
+
+		formatStringDefinition = "0"
+
+		changedProperty = IsHidden
+
+	measure disasterbyenddate = CALCULATE([DistinctCount], USERELATIONSHIP('dw fact_disaster_event'[end_date_id],'dw dim_date'[date_id]))
+		formatString: 0
+		lineageTag: cb0bd5b1-f768-49c7-8510-8e2564ddd075
+
+		changedProperty = IsHidden
+
+	measure DisasterRecord = COUNTROWS('dw fact_disaster_event')
+		lineageTag: 107d3115-0461-4775-bbe7-d9714f161cf7
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure DisasterRecordDistinct = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
+		formatString: 0
+		lineageTag: 1b431b1a-194a-4595-8346-774bd015ffa9
+
+		changedProperty = IsHidden
+
+	measure 'Highest Events by Disaster Type' = MAXX(VALUES('dw dim_event_type'[event_type]), 'dw fact_disaster_event'[DisasterRecord])
+		formatString: 0
+		lineageTag: 7dad1e5f-97d1-49b7-9280-76cc420d4088
+
+		changedProperty = IsHidden
+
+	measure DisasterRecordPercentage = DIVIDE('dw fact_disaster_event'[DisasterRecord], CALCULATE('dw fact_disaster_event'[DisasterRecord],ALL('dw dim_event_type'[event_type])))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f4a81ba2-d694-4964-938b-9db10bd6644a
+
+		changedProperty = IsHidden
+
+	measure '% of population effected' =
+			DIVIDE(SUM('dw fact_disaster_event'[population_effected]),
+			                        CALCULATE(
+			                                    SUM('dw fact_disaster_event'[population_effected]),
+			                                    ALL('dw dim_location'[country_location_name])
+			                        ))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b97453ce-2596-47a4-8be9-c731af305d55
+
+		changedProperty = IsHidden
+
+	measure AvgPeopleAffected = AVERAGE('dw fact_disaster_event'[population_effected])
+		lineageTag: 3ee0ed9f-53e1-46fd-b2d7-ac64c34d370e
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure MaxDuration = MAX('dw fact_disaster_event'[duration_days])
+		formatString: 0
+		lineageTag: 96b497c8-a456-41c0-bb5e-968029904481
+
+		changedProperty = IsHidden
+
+	measure CountOfdisasterWithoutpopulation = CALCULATE(COUNTROWS('dw fact_disaster_event'), ISBLANK('dw fact_disaster_event'[population_effected]))
+		formatString: 0
+		lineageTag: 85b444d4-f84e-4d3d-94a8-6956eb560698
+
+		changedProperty = IsHidden
+
+	measure RankCountry = RANKX(ALL('dw dim_location'[country_location_name]), 'dw fact_disaster_event'[DisasterRecord],,DESC,Dense)
+		formatString: 0
+		lineageTag: c4ffd370-5846-431d-8c25-f32f1f7f1138
+
+		changedProperty = IsHidden
+
+	measure '% of Disaster count' =
+			DIVIDE(COUNT('dw fact_disaster_event'[disaster_event_id]),
+			                        CALCULATE(
+			                                    COUNT('dw fact_disaster_event'[disaster_event_id]),
+			                                    ALL('dw dim_event_type'[event_type_slicer])
+			                        ))
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 16b574dc-823a-4263-b508-acc007a27696
+
+	measure 'Average Severity' = AVERAGE('dw fact_disaster_event'[severity])
+		formatString: 0.00
+		lineageTag: e0e996cb-2f3a-4fe8-bf74-1a23a1375c76
+
+	measure 'Average Duration (days)' = AVERAGE('dw fact_disaster_event'[duration_days])
+		formatString: 0.0
+		lineageTag: a32d4af0-8bbc-41d2-94a4-fdae32097b33
+
+	measure 'Events YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+		formatString: 0
+		lineageTag: 9f495f6a-39c9-416c-ae0b-d18b40ac41bd
+
+	measure 'Events PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: 0
+		lineageTag: 2a58be51-e8a2-4f9d-903f-479e934acac8
+
+	measure 'Events YoY %' = DIVIDE([Events YTD] - [Events PY YTD], [Events PY YTD])
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 533cccb7-a60c-42e5-aa50-b9cd862f2196
+
+	measure 'Events Rolling 12M' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-12) && 'dw dim_date'[full_date] <= _last))
+		formatString: 0
+		lineageTag: 552e2d09-6913-4394-ba45-379a0a58d9fa
+
+	measure 'Events Rolling 12M PY' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-24) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: 0
+		lineageTag: 768aa0b3-86a1-4c35-9f29-8ef9d217d9a3
+
+	measure 'Events Rolling 12M YoY %' = DIVIDE([Events Rolling 12M] - [Events Rolling 12M PY], [Events Rolling 12M PY])
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: cce345a0-b680-410c-8b30-e6009c0b8d50
+
+	measure 'Affected Population YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+		formatString: #,0
+		lineageTag: b3377b0f-1fa5-41a1-ab8f-e9cfaebe03a9
+
+	measure 'Affected Population PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: #,0
+		lineageTag: 0ded5fcf-2e82-48a3-88e5-0ac412c4d06a
+
+	measure 'Affected Population YoY %' = DIVIDE([Affected Population YTD] - [Affected Population PY YTD], [Affected Population PY YTD])
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 3037263d-9d7a-4935-aaa8-8340dadd826a
+
+	measure 'Average Severity YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+		formatString: 0.00
+		lineageTag: 714ce70f-9713-4644-91aa-4ec1eb64b387
+
+	measure 'Average Severity PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: 0.00
+		lineageTag: 6513a178-6331-45b4-a033-42d420e336be
+
+	measure 'Average Severity YoY %' = DIVIDE([Average Severity YTD] - [Average Severity PY YTD], [Average Severity PY YTD])
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: 484f410d-12e4-451b-953a-e652596022f5
+
+	measure 'Average Duration YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+		formatString: 0.0
+		lineageTag: b467d360-3c06-4629-a97e-5207d443a762
+
+	measure 'Average Duration PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: 0.0
+		lineageTag: ab98c626-cc76-4b32-81e7-c11be9d62bc2
+
+	measure 'Average Duration YoY %' = DIVIDE([Average Duration YTD] - [Average Duration PY YTD], [Average Duration PY YTD])
+		formatString: +0.0%;-0.0%;0.0%
+		lineageTag: bad40458-b57f-4d96-a791-a6a451a29c9e
+
+	column fact_id
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5fab5104-5767-4ed9-b22c-5c3a8d6060bb
+		summarizeBy: sum
+		sourceColumn: fact_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column disaster_event_id
+		dataType: string
+		isNullable: false
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9c26b5f7-8cbf-44a2-85bc-9f1647a53707
+		summarizeBy: none
+		sourceColumn: disaster_event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 358ccff2-1d96-4f97-b477-fa81a55ffc26
+		summarizeBy: none
+		sourceColumn: event_type_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 34a09dc7-7116-4a0a-81fc-1b0f6530bec3
+		summarizeBy: none
+		sourceColumn: location_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column alert_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4ec13700-03e4-41a8-88d4-cbe01a1fbfc8
+		summarizeBy: none
+		sourceColumn: alert_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9f3424cc-59a4-438e-859f-f77a95e49990
+		summarizeBy: none
+		sourceColumn: source_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4e37668e-6e57-4884-8a59-e3c64c8396bf
+		summarizeBy: none
+		sourceColumn: start_date_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_date_id
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 27c358c9-285e-4de0-9799-1e1fad21d58e
+		summarizeBy: sum
+		sourceColumn: end_date_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column severity
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 4b1ed7ba-c37f-48c8-9882-f081980a2b32
+		summarizeBy: sum
+		sourceColumn: severity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column duration_days
+		dataType: int64
+		sourceProviderType: int
+		lineageTag: cce6b899-854d-4cf3-8f63-ff30f87f08af
+		summarizeBy: sum
+		sourceColumn: duration_days
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column population_effected
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 993c38b8-22e0-4d5a-a22b-db5c6a8aecc9
+		summarizeBy: sum
+		sourceColumn: population_effected
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Related = RELATED('dw dim_location'[country_location_name] )
+		lineageTag: 4ad6f184-dad1-497d-a65d-d9b4bb74cd62
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'dw fact_disaster_event' = m
+		mode: import
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
+				    dw_fact_disaster_event_2 = Source{[Schema="dw",Item="fact_disaster_event_2"]}[Data]
+				in
+				    dw_fact_disaster_event_2
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
