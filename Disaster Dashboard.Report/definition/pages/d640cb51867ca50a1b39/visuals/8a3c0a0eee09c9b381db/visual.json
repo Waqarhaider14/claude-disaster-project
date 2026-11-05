@@ -117,7 +117,7 @@
             "value_max": {
               "expr": {
                 "Literal": {
-                  "Value": "143D"
+                  "Value": "586D"
                 }
               }
             },
@@ -131,7 +131,7 @@
             "value_mid": {
               "expr": {
                 "Literal": {
-                  "Value": "72D"
+                  "Value": "293.5D"
                 }
               }
             }
