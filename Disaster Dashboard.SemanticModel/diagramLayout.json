@@ -4,14 +4,14 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 242.42424011230469,
-        "y": 359.09090677897137
+        "x": 0,
+        "y": 0
       },
       "nodes": [
         {
           "location": {
             "x": 1273.4642857142858,
-            "y": 924.04585193452419
+            "y": 1078.3128255208339
           },
           "nodeIndex": "dw fact_disaster_event",
           "nodeLineageTag": "6269e33c-816d-4952-8770-016ce366d4ca",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 1362.2857142857144,
-            "y": 1545.2482328869046
+            "y": 1699.5152064732142
           },
           "nodeIndex": "dw dim_alert",
           "nodeLineageTag": "a77df6a4-9e19-4b28-8215-923b022efdcd",
@@ -37,7 +37,7 @@
         {
           "location": {
             "x": 841.30952380952385,
-            "y": 1461.7482328869048
+            "y": 1616.0152064732144
           },
           "nodeIndex": "dw dim_date",
           "nodeLineageTag": "7f2f4062-19eb-4054-9528-414fd3ffe79f",
@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 620.5,
-            "y": 337.70061383928589
+            "y": 491.96758742559553
           },
           "nodeIndex": "dw dim_drought",
           "nodeLineageTag": "ea293601-75e3-4fbd-8516-67fb11a4a2cf",
@@ -63,7 +63,7 @@
         {
           "location": {
             "x": 1421.8333333333335,
-            "y": 308.53394717261926
+            "y": 462.8009207589289
           },
           "nodeIndex": "dw dim_earthquake",
           "nodeLineageTag": "ea5c798c-2ae4-4e2e-ab9c-22338e183b1a",
@@ -76,7 +76,7 @@
         {
           "location": {
             "x": 1758.4761904761906,
-            "y": 1570.0101376488096
+            "y": 1724.2771112351193
           },
           "nodeIndex": "dw dim_event_type",
           "nodeLineageTag": "967acd11-f951-4143-bce8-3deaab47f447",
@@ -89,7 +89,7 @@
         {
           "location": {
             "x": 1872.1666666666667,
-            "y": 325.36728050595264
+            "y": 479.63425409226227
           },
           "nodeIndex": "dw dim_flood",
           "nodeLineageTag": "8253cc6d-6069-4f0f-959f-3652b4522761",
@@ -102,7 +102,7 @@
         {
           "location": {
             "x": 2481.8095238095239,
-            "y": 1541.8315662202383
+            "y": 1696.0985398065479
           },
           "nodeIndex": "dw dim_location",
           "nodeLineageTag": "e9218efa-cc7a-4308-869f-68bf2a101a95",
@@ -115,7 +115,7 @@
         {
           "location": {
             "x": 2152.5,
-            "y": 1553.7244233630954
+            "y": 1707.991396949405
           },
           "nodeIndex": "dw dim_source",
           "nodeLineageTag": "3edc43f9-6caa-4f78-abb2-89392af0dcd0",
@@ -128,7 +128,7 @@
         {
           "location": {
             "x": 2295.5,
-            "y": 341.03394717261915
+            "y": 495.30092075892878
           },
           "nodeIndex": "dw dim_tropical_cyclone",
           "nodeLineageTag": "de01d1ca-28ef-4838-8642-db10432be36b",
@@ -140,8 +140,8 @@
         },
         {
           "location": {
-            "x": 2728.1666666666665,
-            "y": 370.03394717261926
+            "x": 2651.5,
+            "y": 550.96758742559564
           },
           "nodeIndex": "dw dim_volcano",
           "nodeLineageTag": "4bc9381a-991b-4276-b90d-21901fa831b9",
@@ -154,7 +154,7 @@
         {
           "location": {
             "x": 1018.3333333333333,
-            "y": 339.86728050595264
+            "y": 494.13425409226227
           },
           "nodeIndex": "dw dim_wild_fire",
           "nodeLineageTag": "b6ea3f99-2519-4186-9a78-e554962ab732",
@@ -167,7 +167,7 @@
         {
           "location": {
             "x": 143.75,
-            "y": 637.52204241071468
+            "y": 791.78901599702431
           },
           "nodeIndex": "TableCalenderAuto(7)",
           "nodeLineageTag": "5f27d64f-f4c7-4968-8773-3b7daeee79cc",
@@ -180,7 +180,7 @@
         {
           "location": {
             "x": 142.5,
-            "y": 853.27204241071468
+            "y": 1007.5390159970243
           },
           "nodeIndex": "TableCalenderAuto",
           "nodeLineageTag": "90990693-dcca-4f1e-8e47-b97e52d37187",
@@ -193,7 +193,7 @@
         {
           "location": {
             "x": 146.99999999999955,
-            "y": 1085.1887090773812
+            "y": 1239.4556826636908
           },
           "nodeIndex": "Calculation group",
           "nodeLineageTag": "26358fd7-ad6f-497a-9036-f566b982c6eb",
@@ -206,7 +206,7 @@
         {
           "location": {
             "x": 134.5,
-            "y": 1430.1470424107147
+            "y": 1584.4140159970243
           },
           "nodeIndex": "Disaster Count Analysis",
           "nodeLineageTag": "f7d4fbf6-d518-4dde-823e-8f7a61c4f515",
@@ -219,7 +219,7 @@
         {
           "location": {
             "x": 130.32142857142844,
-            "y": 1630.1559709821433
+            "y": 1784.422944568453
           },
           "nodeIndex": "timeframe",
           "nodeLineageTag": "14d78552-9e16-4640-bdcb-7f7e3074e16e",
@@ -232,7 +232,7 @@
         {
           "location": {
             "x": 2486.3896150134856,
-            "y": 1894.6509239560085
+            "y": 2048.9178975423183
           },
           "nodeIndex": "Table",
           "nodeLineageTag": "1fcfeed8-10c1-4f8a-9344-dd2f8fc0eccc",
@@ -245,7 +245,7 @@
         {
           "location": {
             "x": 141.83333333333348,
-            "y": 1247.9707031250002
+            "y": 1402.2376767113099
           },
           "nodeIndex": "Disaster Date Granularity",
           "nodeLineageTag": "7d32948b-9059-4ac3-a7ef-f5cd8d6df399",
@@ -258,7 +258,7 @@
         {
           "location": {
             "x": 153.69047619047547,
-            "y": 323.04110572451646
+            "y": 477.30807931082609
           },
           "nodeIndex": "dw fact_disaster_event_2",
           "nodeLineageTag": "92a390d5-bdc1-4137-ad29-0cfd0be441f4",
@@ -267,10 +267,23 @@
             "width": 234
           },
           "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 161.84523809523807,
+            "y": 97.992128644670856
+          },
+          "nodeIndex": "dw fact_disaster_event_3",
+          "nodeLineageTag": "ef755865-ac63-4b49-98e8-fc0d0823b4e0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
-      "zoomValue": 60,
+      "zoomValue": 40,
       "pinKeyFieldsToTop": true,
       "showExtraHeaderInfo": true,
       "hideKeyFieldsWhenCollapsed": false,

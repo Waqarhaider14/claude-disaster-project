@@ -117,7 +117,7 @@
             "value_max": {
               "expr": {
                 "Literal": {
-                  "Value": "586D"
+                  "Value": "465D"
                 }
               }
             },
@@ -131,7 +131,7 @@
             "value_mid": {
               "expr": {
                 "Literal": {
-                  "Value": "293.5D"
+                  "Value": "233D"
                 }
               }
             }
@@ -140,7 +140,22 @@
       ],
       "pointColors": [
         {
-          "properties": {}
+          "properties": {
+            "value_min": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "value_max": {
+              "expr": {
+                "Literal": {
+                  "Value": "160D"
+                }
+              }
+            }
+          }
         }
       ],
       "lineColors": [

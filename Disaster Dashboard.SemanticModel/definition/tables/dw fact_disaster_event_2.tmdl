@@ -1,7 +1,7 @@
 table 'dw fact_disaster_event_2'
 	lineageTag: 92a390d5-bdc1-4137-ad29-0cfd0be441f4
 
-	measure DisasterRecord2 = COUNTROWS('dw fact_disaster_event')
+	measure DisasterRecord2 = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
 		formatString: 0
 		lineageTag: 2216bdbd-b720-421c-aa09-67e62a069f3e
 

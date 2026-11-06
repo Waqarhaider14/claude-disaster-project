@@ -14,42 +14,6 @@ relationship 6b7ebafb-0703-b1f9-b835-2108fdf8be12
 	fromColumn: 'dw fact_disaster_event'.location_id
 	toColumn: 'dw dim_location'.location_id
 
-relationship 1d481d36-9349-6cdc-43ac-407424ed884d
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_drought'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
-relationship 659800ef-3e70-8d47-7daf-3e721e426a45
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_wild_fire'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
-relationship 61535abf-1c13-f036-15f9-6c0af8eff340
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_earthquake'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
-relationship 308afe9c-d20a-3586-b362-7345059f0e7f
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_flood'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
-relationship db50eafc-ad85-1846-29d7-29cb33b5dbce
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_tropical_cyclone'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
-relationship ac739cb0-9c24-47b7-d45e-b12832beb796
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: 'dw dim_volcano'.disaster_event_id
-	toColumn: 'dw fact_disaster_event'.disaster_event_id
-
 relationship 2ca7ef7e-1d2b-43f9-94f3-6923db1681e7
 	joinOnDateBehavior: datePartOnly
 	fromColumn: TableCalenderAuto.Date
@@ -78,4 +42,28 @@ relationship b9e4fcf0-c6f4-51ce-6fa9-0acb2ac12936
 relationship f9a1cd8e-04c3-4aa5-1070-49b0f2a4f70e
 	fromColumn: 'dw fact_disaster_event'.start_date_id
 	toColumn: 'dw dim_date'.date_id
+
+relationship f3751170-7137-0c12-a721-f8ecbcf440ff
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_drought'.disaster_event_id
+
+relationship 330b1326-abe4-8673-1b36-63b047de8725
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_wild_fire'.disaster_event_id
+
+relationship 39eab705-0a53-fe41-7b41-1fd6e574f939
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_earthquake'.disaster_event_id
+
+relationship f15bf02a-11f7-eb84-56d4-41cfc3445782
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_flood'.disaster_event_id
+
+relationship 1c407415-1278-cf6d-0471-e8d515019594
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_tropical_cyclone'.cyclone_name
+
+relationship ba3b3fbd-de65-5df1-4088-5fd56f7d3cbb
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_volcano'.disaster_event_id
 

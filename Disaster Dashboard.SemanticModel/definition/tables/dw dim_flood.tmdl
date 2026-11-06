@@ -29,7 +29,7 @@ table 'dw dim_flood'
 		formatString: 0
 		sourceProviderType: int
 		lineageTag: ee262b5b-f949-4b76-96ff-272a21820def
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: death
 
 		changedProperty = IsHidden
@@ -41,7 +41,7 @@ table 'dw dim_flood'
 		formatString: 0
 		sourceProviderType: int
 		lineageTag: f0dbcfbe-a6be-457e-b269-0fb93645c872
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: displaced
 
 		changedProperty = IsHidden

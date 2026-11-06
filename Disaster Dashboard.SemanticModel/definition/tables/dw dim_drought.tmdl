@@ -29,7 +29,7 @@ table 'dw dim_drought'
 		formatString: 0
 		sourceProviderType: int
 		lineageTag: 3d40d5d7-378d-4af3-9d90-1fa6f0162b1b
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: effected_area_km2
 
 		changedProperty = IsHidden

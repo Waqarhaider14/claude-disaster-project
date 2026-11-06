@@ -1,6 +1,10 @@
 table 'dw dim_location'
 	lineageTag: e9218efa-cc7a-4308-869f-68bf2a101a95
 
+	measure CountryCount = DISTINCTCOUNT('dw dim_location'[country_location_name])
+		formatString: 0
+		lineageTag: 28c8a4a6-3772-4f6c-9313-f992a656d778
+
 	column location_id
 		dataType: int64
 		isNullable: false

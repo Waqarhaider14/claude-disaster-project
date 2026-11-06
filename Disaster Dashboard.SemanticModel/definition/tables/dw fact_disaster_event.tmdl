@@ -27,12 +27,11 @@ table 'dw fact_disaster_event'
 
 		changedProperty = IsHidden
 
-	measure DisasterRecord = COUNTROWS('dw fact_disaster_event')
+	measure DisasterRecord = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
+		formatString: 0
 		lineageTag: 107d3115-0461-4775-bbe7-d9714f161cf7
 
 		changedProperty = IsHidden
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure DisasterRecordDistinct = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
 		formatString: 0
@@ -164,6 +163,10 @@ table 'dw fact_disaster_event'
 	measure 'Average Duration YoY %' = DIVIDE([Average Duration YTD] - [Average Duration PY YTD], [Average Duration PY YTD])
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: bad40458-b57f-4d96-a791-a6a451a29c9e
+
+	measure 'Count DIsasters' = DISTINCTCOUNT('dw fact_disaster_event_3'[disaster_event_id])
+		formatString: 0
+		lineageTag: 6ea1b7c1-2df0-44f0-860f-b4c1d27bc456
 
 	column fact_id
 		dataType: int64
@@ -313,7 +316,7 @@ table 'dw fact_disaster_event'
 		source =
 				let
 				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
-				    dw_fact_disaster_event_2 = Source{[Schema="dw",Item="fact_disaster_event_2"]}[Data]
+				    dw_fact_disaster_event_2 = Source{[Schema="dw",Item="fact_disaster_event_3"]}[Data]
 				in
 				    dw_fact_disaster_event_2
 
