@@ -96,9 +96,17 @@ table 'dw dim_alert'
 		source =
 				let
 				    Source = PostgreSQL.Database("localhost", "dw_disaster_events"),
-				    dw_dim_alert = Source{[Schema="dw",Item="dim_alert"]}[Data]
+				    dw_dim_alert = Source{[Schema="dw",Item="dim_alert"]}[Data],
+				    // Data fix: invalid episode_alert_level values (e.g. "Turkey") fall back to alert_level
+				    FixEpisodeAlertLevel = Table.ReplaceValue(
+				        dw_dim_alert,
+				        each [episode_alert_level],
+				        each if List.Contains({"Green", "Orange", "Red"}, [episode_alert_level]) then [episode_alert_level] else [alert_level],
+				        Replacer.ReplaceValue,
+				        {"episode_alert_level"}
+				    )
 				in
-				    dw_dim_alert
+				    FixEpisodeAlertLevel
 
 	changedProperty = IsHidden
 

@@ -1,6 +1,29 @@
 table 'dw dim_flood'
 	lineageTag: 8253cc6d-6069-4f0f-959f-3652b4522761
 
+	/// Number of flood events in Thailand
+	measure 'Thailand Floods' =
+			CALCULATE(
+			    COUNTROWS('dw dim_flood'),
+			    'dw dim_location'[country_location_name] = "Thailand",
+			    CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH)
+			)
+		formatString: #,0
+		lineageTag: 8a4ec79b-5b4f-4b4c-99e5-b9c3ff90fa41
+
+	/// Flood deaths in Thailand, counting each GDACS event once (dim_flood has duplicate rows per gdacs_id)
+	measure 'Thailand Flood Deaths' =
+			CALCULATE(
+			    SUMX(
+			        VALUES('dw dim_flood'[gdacs_id]),
+			        CALCULATE(MAX('dw dim_flood'[death]))
+			    ),
+			    'dw dim_location'[country_location_name] = "Thailand",
+			    CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH)
+			)
+		formatString: #,0
+		lineageTag: d109d850-776e-4208-81a7-f0dab00515be
+
 	column disaster_event_id
 		dataType: string
 		isNullable: false

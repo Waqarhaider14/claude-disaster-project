@@ -17,10 +17,6 @@ table 'Calculation group'
 
 			formatStringDefinition = "$##"
 
-	measure DisasterCount = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
-		formatString: 0
-		lineageTag: 20f145a8-47c2-4e60-8d87-e84eb0e5ab98
-
 	measure 'DisasterRecord YTD' =
 			
 			TOTALYTD(

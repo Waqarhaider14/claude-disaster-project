@@ -1,27 +1,7 @@
 table 'dw fact_disaster_event'
 	lineageTag: 6269e33c-816d-4952-8770-016ce366d4ca
 
-	measure FilterMeasure = COUNTX(FILTER('dw fact_disaster_event','dw fact_disaster_event'[event_type_id] = 17),'dw fact_disaster_event'[disaster_event_id])
-		lineageTag: 3d02efd6-f7f7-4592-9cb3-de1d3d315e90
-
-		formatStringDefinition = "0"
-
-		changedProperty = IsHidden
-
-	measure Calculate = CALCULATE(COUNTROWS('dw fact_disaster_event'),'dw dim_location'[country_location_name] = "India")
-		formatString: 0
-		lineageTag: 10e5fdd8-d213-4f0b-bb3f-ebf0faf4ebd2
-
-		changedProperty = IsHidden
-
-	measure DistinctCount = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
-		lineageTag: 03ba3028-7d01-43c4-a468-6d4008440999
-
-		formatStringDefinition = "0"
-
-		changedProperty = IsHidden
-
-	measure disasterbyenddate = CALCULATE([DistinctCount], USERELATIONSHIP('dw fact_disaster_event'[end_date_id],'dw dim_date'[date_id]))
+	measure disasterbyenddate = CALCULATE([DisasterRecord], USERELATIONSHIP('dw fact_disaster_event'[end_date_id],'dw dim_date'[date_id]))
 		formatString: 0
 		lineageTag: cb0bd5b1-f768-49c7-8510-8e2564ddd075
 
@@ -30,12 +10,6 @@ table 'dw fact_disaster_event'
 	measure DisasterRecord = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
 		formatString: 0
 		lineageTag: 107d3115-0461-4775-bbe7-d9714f161cf7
-
-		changedProperty = IsHidden
-
-	measure DisasterRecordDistinct = DISTINCTCOUNT('dw fact_disaster_event'[disaster_event_id])
-		formatString: 0
-		lineageTag: 1b431b1a-194a-4595-8346-774bd015ffa9
 
 		changedProperty = IsHidden
 
@@ -104,11 +78,11 @@ table 'dw fact_disaster_event'
 		formatString: 0.0
 		lineageTag: a32d4af0-8bbc-41d2-94a4-fdae32097b33
 
-	measure 'Events YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+	measure 'Events YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([DisasterRecord], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
 		formatString: 0
 		lineageTag: 9f495f6a-39c9-416c-ae0b-d18b40ac41bd
 
-	measure 'Events PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	measure 'Events PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([DisasterRecord], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: 0
 		lineageTag: 2a58be51-e8a2-4f9d-903f-479e934acac8
 
@@ -116,11 +90,11 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: 533cccb7-a60c-42e5-aa50-b9cd862f2196
 
-	measure 'Events Rolling 12M' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-12) && 'dw dim_date'[full_date] <= _last))
+	measure 'Events Rolling 12M' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([DisasterRecord], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-12) && 'dw dim_date'[full_date] <= _last))
 		formatString: 0
 		lineageTag: 552e2d09-6913-4394-ba45-379a0a58d9fa
 
-	measure 'Events Rolling 12M PY' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE([DistinctCount], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-24) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	measure 'Events Rolling 12M PY' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([DisasterRecord], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] > EDATE(_last,-24) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: 0
 		lineageTag: 768aa0b3-86a1-4c35-9f29-8ef9d217d9a3
 
@@ -128,11 +102,11 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: cce345a0-b680-410c-8b30-e6009c0b8d50
 
-	measure 'Affected Population YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+	measure 'Affected Population YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
 		formatString: #,0
 		lineageTag: b3377b0f-1fa5-41a1-ab8f-e9cfaebe03a9
 
-	measure 'Affected Population PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	measure 'Affected Population PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: #,0
 		lineageTag: 0ded5fcf-2e82-48a3-88e5-0ac412c4d06a
 
@@ -140,11 +114,11 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: 3037263d-9d7a-4935-aaa8-8340dadd826a
 
-	measure 'Average Severity YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+	measure 'Average Severity YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
 		formatString: 0.00
 		lineageTag: 714ce70f-9713-4644-91aa-4ec1eb64b387
 
-	measure 'Average Severity PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	measure 'Average Severity PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[severity]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: 0.00
 		lineageTag: 6513a178-6331-45b4-a033-42d420e336be
 
@@ -152,21 +126,17 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: 484f410d-12e4-451b-953a-e652596022f5
 
-	measure 'Average Duration YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+	measure 'Average Duration YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
 		formatString: 0.0
 		lineageTag: b467d360-3c06-4629-a97e-5207d443a762
 
-	measure 'Average Duration PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DistinctCount]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	measure 'Average Duration PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(AVERAGE('dw fact_disaster_event'[duration_days]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: 0.0
 		lineageTag: ab98c626-cc76-4b32-81e7-c11be9d62bc2
 
 	measure 'Average Duration YoY %' = DIVIDE([Average Duration YTD] - [Average Duration PY YTD], [Average Duration PY YTD])
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: bad40458-b57f-4d96-a791-a6a451a29c9e
-
-	measure 'Count DIsasters' = DISTINCTCOUNT('dw fact_disaster_event_3'[disaster_event_id])
-		formatString: 0
-		lineageTag: 6ea1b7c1-2df0-44f0-860f-b4c1d27bc456
 
 	column fact_id
 		dataType: int64
