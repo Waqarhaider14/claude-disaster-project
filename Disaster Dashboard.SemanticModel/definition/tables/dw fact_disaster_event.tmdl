@@ -314,6 +314,51 @@ table 'dw fact_disaster_event'
 		displayFolder: KPI\02 Alerts & Risk
 		lineageTag: 8e2edd77-6b4f-47f2-8e88-36c23f046c58
 
+	/// Average people displaced per flood event
+	measure 'Displaced per Flood Event' = DIVIDE([Flood Displaced], [Flood Events])
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: bc32c684-3cfd-47ae-93b2-ffa8a74efe50
+
+	/// Deaths in the single deadliest flood event in context - shows how much one event drives the total
+	measure 'Deadliest Flood (Deaths)' = CALCULATE(MAXX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[death]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 799416d3-8143-4351-95a9-ce93b7e85727
+
+	measure 'Flood Deaths Country Rank' = IF(HASONEVALUE('dw dim_location'[country_location_name]) && NOT ISBLANK([Flood Deaths]), RANKX(ALLSELECTED('dw dim_location'[country_location_name]), [Flood Deaths], , DESC, Dense))
+		formatString: 0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 55bc6da8-dadb-41f1-b6d0-f71ad28bf0ff
+
+	/// Flood deaths shown only for the top 10 countries (for Top 10 charts)
+	measure 'Flood Deaths (Top 10 Countries)' = IF([Flood Deaths Country Rank] <= 10, [Flood Deaths])
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 6a277196-663c-4599-a2af-7debac9a2cfe
+
+	measure 'Flood Event Rank' = IF(HASONEVALUE('dw dim_flood'[gdacs_id]) && NOT ISBLANK([Flood Deaths]), RANKX(ALLSELECTED('dw dim_flood'[gdacs_id]), [Flood Deaths], , DESC, Dense))
+		formatString: 0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 61017711-6048-4d89-ac79-834dadae3a74
+
+	/// Flood deaths shown only for the 10 deadliest flood events (for tables)
+	measure 'Flood Deaths (Top 10 Events)' = IF([Flood Event Rank] <= 10, [Flood Deaths])
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: b98d0a68-b689-44e3-a7e6-9dba8ed03a20
+
+	/// Countries affected by the flood event(s) in context
+	measure 'Flood Countries' = CALCULATE(CONCATENATEX(SUMMARIZE('dw fact_disaster_event', 'dw dim_location'[country_location_name]), 'dw dim_location'[country_location_name], ", ", 'dw dim_location'[country_location_name], ASC), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		displayFolder: KPI\03 Human Impact
+		lineageTag: fdbc1dab-20ce-4ac7-b6ec-ab4301c64375
+
+	/// Earliest start date of the flood event(s) in context
+	measure 'Flood Start Date' = CALCULATE(MINX('dw fact_disaster_event', RELATED('dw dim_date'[full_date])), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		formatString: dd mmm yyyy
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 4d9a7b35-2986-45ce-b5a9-06180394be60
+
 	column fact_id
 		dataType: int64
 		isNullable: false
