@@ -49,11 +49,11 @@ relationship f15bf02a-11f7-eb84-56d4-41cfc3445782
 	fromColumn: 'dw fact_disaster_event'.disaster_event_id
 	toColumn: 'dw dim_flood'.disaster_event_id
 
-relationship 1c407415-1278-cf6d-0471-e8d515019594
-	fromColumn: 'dw fact_disaster_event'.disaster_event_id
-	toColumn: 'dw dim_tropical_cyclone'.cyclone_name
-
 relationship ba3b3fbd-de65-5df1-4088-5fd56f7d3cbb
 	fromColumn: 'dw fact_disaster_event'.disaster_event_id
 	toColumn: 'dw dim_volcano'.disaster_event_id
+
+relationship 'dw fact_disaster_event_disaster_event_id_dw dim_tropical_cyclone_disaster_event_id'
+	fromColumn: 'dw fact_disaster_event'.disaster_event_id
+	toColumn: 'dw dim_tropical_cyclone'.disaster_event_id
 

@@ -35,6 +35,20 @@ table 'dw dim_earthquake'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Numeric earthquake magnitude parsed from earthquake_magnitude (e.g. '5.6M')
+	column Magnitude = IFERROR(VALUE(TRIM(SUBSTITUTE(UPPER('dw dim_earthquake'[earthquake_magnitude]), "M", ""))), BLANK())
+		dataType: double
+		formatString: 0.0
+		lineageTag: f2f2121f-cb68-4319-a77c-3dd6686b9ccb
+		summarizeBy: none
+
+	/// Numeric depth in km parsed from depth_km
+	column 'Depth (km)' = IFERROR(VALUE(TRIM(SUBSTITUTE(LOWER('dw dim_earthquake'[depth_km]), "km", ""))), BLANK())
+		dataType: double
+		formatString: #,0.0
+		lineageTag: e9e6cedc-f7f1-4c47-9b01-123b3d31e363
+		summarizeBy: none
+
 	partition 'dw dim_earthquake' = m
 		mode: import
 		source =

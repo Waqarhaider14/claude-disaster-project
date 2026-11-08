@@ -24,6 +24,13 @@ table 'dw dim_wild_fire'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Numeric burned area in hectares parsed from burned_area (e.g. '20865 hectare')
+	column 'Burned Area (ha)' = IFERROR(VALUE(TRIM(SUBSTITUTE(LOWER('dw dim_wild_fire'[burned_area]), "hectare", ""))), BLANK())
+		dataType: double
+		formatString: #,0
+		lineageTag: 4dcb3d97-b141-49fb-bc8e-1dd4cdd82c1d
+		summarizeBy: none
+
 	partition 'dw dim_wild_fire' = m
 		mode: import
 		source =

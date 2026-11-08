@@ -57,6 +57,13 @@ table 'dw dim_volcano'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Volcanic Explosivity Index (0-8) mapped from the VEI category name
+	column VEI = SWITCH('dw dim_volcano'[volcano_explosivity_index], "Non-explosive", 0, "Gentle", 1, "Explosive", 2, "Severe", 3, "Cataclysmic", 4, "Paroxysmal", 5, "Colossal", 6, "Super-colossal", 7, "Mega-colossal", 8, BLANK())
+		dataType: int64
+		formatString: 0
+		lineageTag: 617f95d7-5108-451e-937f-9b3322926ff8
+		summarizeBy: none
+
 	partition 'dw dim_volcano' = m
 		mode: import
 		source =

@@ -57,6 +57,16 @@ table 'dw dim_tropical_cyclone'
 
 		annotation SummarizationSetBy = Automatic
 
+	/// Numeric max wind speed parsed from maximum_wind_speed (e.g. '102 km/h')
+	column 'Max Wind Speed (km/h)' =
+			VAR _t = LOWER('dw dim_tropical_cyclone'[maximum_wind_speed])
+			VAR _pos = SEARCH("km/h", _t, 1, 0)
+			RETURN IFERROR(VALUE(TRIM(IF(_pos > 0, LEFT(_t, _pos - 1), _t))), BLANK())
+		dataType: double
+		formatString: #,0
+		lineageTag: 29ce376e-d46a-4fbd-9e46-c541b35390ba
+		summarizeBy: none
+
 	partition 'dw dim_tropical_cyclone' = m
 		mode: import
 		source =

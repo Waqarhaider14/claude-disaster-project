@@ -138,6 +138,182 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: bad40458-b57f-4d96-a791-a6a451a29c9e
 
+	/// Distinct disaster events (multi-country events counted once)
+	measure 'Total Events' = [DisasterRecord]
+		formatString: #,0
+		displayFolder: KPI\01 Overview
+		lineageTag: 69f1083f-f14d-42cd-9d40-c91b0f81fef2
+
+	/// Number of countries/locations with at least one event in the current filter context
+	measure 'Countries Affected' = DISTINCTCOUNT('dw fact_disaster_event'[location_id])
+		formatString: #,0
+		displayFolder: KPI\01 Overview
+		lineageTag: b1e6239f-2901-448c-aa2f-c7f9a79d2a67
+
+	/// Average events per year, over years that had events
+	measure 'Avg Events per Year' = AVERAGEX(VALUES('dw dim_date'[year]), [DisasterRecord])
+		formatString: #,0.0
+		displayFolder: KPI\01 Overview
+		lineageTag: dbcdc2e9-db82-4e4e-8eac-f130f68f9a79
+
+	/// Events with GDACS Red alert (likely need international assistance)
+	measure 'Red Alert Events' = CALCULATE([DisasterRecord], 'dw dim_alert'[alert_level] = "Red")
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 2802eacc-e137-4ee2-8818-f277c9d2ecfd
+
+	/// Events with GDACS Orange alert
+	measure 'Orange Alert Events' = CALCULATE([DisasterRecord], 'dw dim_alert'[alert_level] = "Orange")
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 4a918b54-ef9b-4519-a200-652aec539a76
+
+	/// Events with GDACS Red or Orange alert
+	measure 'High Alert Events' = CALCULATE([DisasterRecord], 'dw dim_alert'[alert_level] IN {"Red", "Orange"})
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 1e7dac4c-c53b-43d3-9f02-d3a83d4b386a
+
+	/// Share of events that reached Orange or Red alert
+	measure 'High Alert Rate %' = DIVIDE([High Alert Events], [DisasterRecord])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 8652134d-82af-423e-a0cf-dbb6696e1305
+
+	measure 'High Alert Events YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([High Alert Events], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: ea76b827-8d57-4f39-8da2-fe0d6a4ffad7
+
+	measure 'High Alert Events PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([High Alert Events], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 50642062-b6ef-4643-b067-19458bf30c9e
+
+	measure 'High Alert Events YoY %' = DIVIDE([High Alert Events YTD] - [High Alert Events PY YTD], [High Alert Events PY YTD])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 5a3a1714-9501-4f62-8d35-4886b18987c2
+
+	/// Alert-weighted risk index: Green x1 + Orange x3 + Red x9. Rewards severity, not just frequency.
+	measure 'Risk Score' =
+			VAR _green = CALCULATE([DisasterRecord], 'dw dim_alert'[alert_level] = "Green")
+			RETURN _green * 1 + [Orange Alert Events] * 3 + [Red Alert Events] * 9
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 2bad9953-883d-42bc-bb00-79172d3d391b
+
+	/// Rank of the country by Risk Score within the current selection
+	measure 'Country Risk Rank' = IF(HASONEVALUE('dw dim_location'[country_location_name]) && NOT ISBLANK([Risk Score]), RANKX(ALLSELECTED('dw dim_location'[country_location_name]), [Risk Score], , DESC, Dense))
+		formatString: 0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 7b27ceb3-4aaa-45d4-bd0a-fc5f7db6aaa3
+
+	/// Days between the most recent Red alert event (in context) and the latest event date in the dataset
+	measure 'Days Since Last Red Alert' =
+			VAR _lastRed = CALCULATE(MAXX('dw fact_disaster_event', RELATED('dw dim_date'[full_date])), 'dw dim_alert'[alert_level] = "Red")
+			VAR _dataEnd = CALCULATE(MAXX('dw fact_disaster_event', RELATED('dw dim_date'[full_date])), REMOVEFILTERS())
+			RETURN IF(NOT ISBLANK(_lastRed), DATEDIFF(_lastRed, _dataEnd, DAY))
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 9ac98774-92b9-4d9c-aca7-314e1fb25fe0
+
+	/// Distinct flood events (by GDACS id, removes duplicate flood records)
+	measure 'Flood Events' = CALCULATE(DISTINCTCOUNT('dw dim_flood'[gdacs_id]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 87a2231e-8d01-4867-8cb1-35ef4e9259f3
+
+	/// Flood deaths, each GDACS flood event counted once
+	measure 'Flood Deaths' = CALCULATE(SUMX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[death]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: f551c2e2-756d-4310-bfe3-23478e6089cd
+
+	/// People displaced by floods, each GDACS flood event counted once
+	measure 'Flood Displaced' = CALCULATE(SUMX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[displaced]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 7e061dab-ee59-4f33-ba18-394e02a2d631
+
+	/// Average lethality of a flood event
+	measure 'Deaths per Flood Event' = DIVIDE([Flood Deaths], [Flood Events])
+		formatString: #,0.0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: c5d614e7-1174-4083-86ff-2f9365c42b50
+
+	/// Population exposed (EQ/VO/WF only; FL/TC/DR have no data). Multi-country events counted once.
+	measure 'Population Exposed' = SUMX(VALUES('dw fact_disaster_event'[disaster_event_id]), CALCULATE(MAX('dw fact_disaster_event'[population_effected])))
+		formatString: #,0
+		displayFolder: KPI\03 Human Impact
+		lineageTag: 00d31c38-6e54-4adb-a887-f06f9cc9a993
+
+	measure 'Avg Earthquake Magnitude' = CALCULATE(AVERAGE('dw dim_earthquake'[Magnitude]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+		formatString: 0.0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 68870e54-2aa0-4c97-83e4-951556f678ce
+
+	measure 'Max Earthquake Magnitude' = CALCULATE(MAX('dw dim_earthquake'[Magnitude]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+		formatString: 0.0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: f086da7a-db99-43f7-8cc9-00fb4b8fa361
+
+	/// Earthquakes of magnitude 6.0 or higher
+	measure 'Strong Earthquakes (M6+)' = CALCULATE(COUNTROWS('dw dim_earthquake'), 'dw dim_earthquake'[Magnitude] >= 6, CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 2c23e1c0-e3cd-4d56-b5c0-8621947ef2ed
+
+	measure 'Avg Cyclone Wind Speed (km/h)' = CALCULATE(AVERAGE('dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 9c2bdbd9-428e-48da-84c0-bccaf97cffed
+
+	measure 'Max Cyclone Wind Speed (km/h)' = CALCULATE(MAX('dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 0f80c049-60cf-46bd-81e2-b3ee99618e4a
+
+	/// Cyclones in category Extreme or Catastrophic
+	measure 'Severe Cyclones' = CALCULATE(COUNTROWS('dw dim_tropical_cyclone'), 'dw dim_tropical_cyclone'[category] IN {"Extreme", "Catastrophic"}, CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 9634ce7e-5dbb-4009-b8cb-5f37273f50e1
+
+	measure 'Total Burned Area (ha)' = CALCULATE(SUM('dw dim_wild_fire'[Burned Area (ha)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_wild_fire'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 429eef05-6697-4b6e-bf89-e2f728f73af8
+
+	measure 'Drought Affected Area (km²)' = CALCULATE(SUM('dw dim_drought'[effected_area_km2]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_drought'[disaster_event_id], BOTH))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: b1413d92-6987-47b8-b818-a464e15155bd
+
+	/// Average drought duration, each drought counted once
+	measure 'Avg Drought Duration (days)' = CALCULATE(AVERAGEX(VALUES('dw fact_disaster_event'[disaster_event_id]), CALCULATE(MAX('dw fact_disaster_event'[duration_days]))), 'dw dim_event_type'[event_type] = "DR")
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 03232cc1-84fa-4b7c-b0ec-cfc04765122d
+
+	/// Highest Volcanic Explosivity Index (0-8)
+	measure 'Max Volcano VEI' = CALCULATE(MAX('dw dim_volcano'[VEI]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_volcano'[disaster_event_id], BOTH))
+		formatString: 0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 2331d355-f87b-414e-9f69-005078abde0e
+
+	/// Share of events that have population data - shows how reliable Population Exposed is
+	measure 'Population Data Coverage %' = DIVIDE(CALCULATE([DisasterRecord], NOT ISBLANK('dw fact_disaster_event'[population_effected])), [DisasterRecord])
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: KPI\05 Data Quality
+		lineageTag: 06041c63-da06-4d1b-8ed7-a5cabf176c4f
+
+	/// Risk Score shown only for the top 10 countries in the current selection (for Top 10 charts)
+	measure 'Risk Score (Top 10)' = IF([Country Risk Rank] <= 10, [Risk Score])
+		formatString: #,0
+		displayFolder: KPI\02 Alerts & Risk
+		lineageTag: 8e2edd77-6b4f-47f2-8e88-36c23f046c58
+
 	column fact_id
 		dataType: int64
 		isNullable: false
