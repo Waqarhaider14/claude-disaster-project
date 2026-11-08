@@ -383,6 +383,38 @@ table 'dw fact_disaster_event'
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: fd6e9d51-4690-4af8-8b0d-8b27de2631dc
 
+	/// Dynamic title for the Country Profile drill-through page
+	measure 'Country Profile Title' = "Country Profile — " & SELECTEDVALUE('dw dim_location'[country_location_name], "select one country")
+		displayFolder: KPI\06 Country Profile
+		lineageTag: 5f4350fa-0bf3-4da8-8d95-3397ab41e212
+
+	/// Rank by Risk Score among all countries (ignores the country filter, keeps year/hazard filters)
+	measure 'Global Risk Rank' = IF(HASONEVALUE('dw dim_location'[country_location_name]) && NOT ISBLANK([Risk Score]), RANKX(FILTER(ALL('dw dim_location'[country_location_name]), NOT ISBLANK([Risk Score])), [Risk Score], , DESC, Dense))
+		formatString: 0
+		displayFolder: KPI\06 Country Profile
+		lineageTag: 5ccd6860-12f8-47a9-83dd-9cd62febb1fe
+
+	/// e.g. '#3 of 241'
+	measure 'Global Risk Rank Label' = VAR r = [Global Risk Rank] VAR n = COUNTROWS(FILTER(ALL('dw dim_location'[country_location_name]), NOT ISBLANK([Risk Score]))) RETURN IF(NOT ISBLANK(r), "#" & r & " of " & n)
+		displayFolder: KPI\06 Country Profile
+		lineageTag: e4606661-c930-442b-8761-fbfd7ee16067
+
+	/// Hazard type with the most events in context
+	measure 'Most Frequent Hazard' = MAXX(TOPN(1, FILTER(VALUES('dw dim_event_type'[event_type_slicer]), NOT ISBLANK([Total Events])), [Total Events], DESC, 'dw dim_event_type'[event_type_slicer], ASC), 'dw dim_event_type'[event_type_slicer])
+		displayFolder: KPI\06 Country Profile
+		lineageTag: 57df5094-2fed-427e-b7d1-36b7ea2c2bad
+
+	/// Calendar month in which most events start
+	measure 'Peak Month' = MAXX(TOPN(1, FILTER(SUMMARIZE(ALL('dw dim_date'), 'dw dim_date'[month], 'dw dim_date'[month_name]), NOT ISBLANK([Total Events])), [Total Events], DESC, 'dw dim_date'[month], ASC), 'dw dim_date'[month_name])
+		displayFolder: KPI\06 Country Profile
+		lineageTag: 16496133-12b7-493f-93ea-ef814ce1d0e4
+
+	/// Alert weight of the event(s) in context (Red 9 / Orange 3 / Green 1) - used to sort event lists by severity
+	measure 'Event Alert Weight' = MAXX(SUMMARIZE('dw fact_disaster_event', 'dw dim_alert'[alert_level]), SWITCH('dw dim_alert'[alert_level], "Red", 9, "Orange", 3, "Green", 1))
+		formatString: 0
+		displayFolder: KPI\06 Country Profile
+		lineageTag: f6bfca44-9185-4640-b110-6ad93de2b1e2
+
 	column fact_id
 		dataType: int64
 		isNullable: false

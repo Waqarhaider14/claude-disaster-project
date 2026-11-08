@@ -358,6 +358,268 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "dw_fact_disaster_event.strong_earthquakes_m6": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Strong Earthquakes (M6+)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Strong earthquakes (M6+)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.max_earthquake_magnitude": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Max Earthquake Magnitude"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Max magnitude": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.severe_cyclones": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Severe Cyclones"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Extreme / catastrophic cyclones": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.max_cyclone_wind_speed_km_h": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Max Cyclone Wind Speed (km/h)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Max wind speed (km/h)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.total_burned_area_ha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Total Burned Area (ha)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Burned area (ha)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.avg_drought_duration_days": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Avg Drought Duration (days)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Avg drought duration (days)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Avg duration (days)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.earthquake_events": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Earthquake Events"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Earthquakes": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.cyclone_events": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Cyclone Events"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Cyclones": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.seasonality_share_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Seasonality Share %"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Share of events": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.drought_affected_area_km": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Drought Affected Area (km²)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Affected area (km²)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_dim_event_type.event_type_slicer": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw dim_event_type",
+			          "ConceptualProperty": "event_type_slicer"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Hazard": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_dim_date.month_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw dim_date",
+			          "ConceptualProperty": "month_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Month": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}
