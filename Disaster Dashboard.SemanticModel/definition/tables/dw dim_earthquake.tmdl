@@ -49,6 +49,19 @@ table 'dw dim_earthquake'
 		lineageTag: e9e6cedc-f7f1-4c47-9b01-123b3d31e363
 		summarizeBy: none
 
+	column 'Magnitude Band Order' = VAR m = 'dw dim_earthquake'[Magnitude] RETURN SWITCH(TRUE(), ISBLANK(m), BLANK(), m < 4, 1, m < 5, 2, m < 6, 3, m < 7, 4, 5)
+		dataType: int64
+		isHidden
+		lineageTag: 59fd7d6a-0f3d-4678-a06d-1522a73d6915
+		summarizeBy: none
+
+	/// Earthquake magnitude band
+	column 'Magnitude Band' = SWITCH('dw dim_earthquake'[Magnitude Band Order], 1, "< 4.0", 2, "4.0–4.9", 3, "5.0–5.9", 4, "6.0–6.9", 5, "7.0+")
+		dataType: string
+		lineageTag: 2f1e1361-8a79-466d-a4c6-8d8a663f60e0
+		summarizeBy: none
+		sortByColumn: 'Magnitude Band Order'
+
 	partition 'dw dim_earthquake' = m
 		mode: import
 		source =

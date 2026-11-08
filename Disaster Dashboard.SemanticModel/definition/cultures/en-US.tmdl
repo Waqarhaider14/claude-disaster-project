@@ -95,6 +95,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Deaths": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -116,6 +126,26 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "People displaced": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "Displaced": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -130,6 +160,195 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "Countries affected": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.flood_events": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Flood Events"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Flood events": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.deaths_per_flood_event": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Deaths per Flood Event"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Deaths per flood": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.displaced_per_flood_event": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Displaced per Flood Event"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Displaced per flood": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.deadliest_flood_deaths": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Deadliest Flood (Deaths)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Deadliest single flood": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.flood_deaths_top_10_countries": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Flood Deaths (Top 10 Countries)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Flood deaths": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.flood_countries": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Flood Countries"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Country": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.flood_start_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Flood Start Date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Start": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.flood_deaths_top_10_events": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Flood Deaths (Top 10 Events)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Deaths": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_dim_flood.gdacs_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw dim_flood",
+			          "ConceptualProperty": "gdacs_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "GDACS event": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

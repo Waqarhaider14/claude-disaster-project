@@ -67,6 +67,19 @@ table 'dw dim_tropical_cyclone'
 		lineageTag: 29ce376e-d46a-4fbd-9e46-c541b35390ba
 		summarizeBy: none
 
+	column 'Category Order' = SWITCH('dw dim_tropical_cyclone'[category], "Tropical Storm", 1, "Minimal", 2, "Moderate", 3, "Extensive", 4, "Extreme", 5, "Catastrophic", 6)
+		dataType: int64
+		isHidden
+		lineageTag: 2d04c47f-78b1-4d27-a97c-4e30ede963c8
+		summarizeBy: none
+
+	/// Cyclone category, sorted from Tropical Storm to Catastrophic
+	column 'Cyclone Category' = 'dw dim_tropical_cyclone'[category]
+		dataType: string
+		lineageTag: 95460f79-7b67-4741-8948-941a03fa05c3
+		summarizeBy: none
+		sortByColumn: 'Category Order'
+
 	partition 'dw dim_tropical_cyclone' = m
 		mode: import
 		source =

@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "e0a2v30scatter0000001",
   "position": {
     "x": 16,
     "y": 450,
     "z": 12000,
     "height": 258,
-    "width": 618.0,
+    "width": 618,
     "tabOrder": 12000
   },
   "visual": {
@@ -32,6 +32,24 @@
             }
           ]
         },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dw fact_disaster_event"
+                    }
+                  },
+                  "Property": "Flood Displaced"
+                }
+              },
+              "queryRef": "dw fact_disaster_event.Flood Displaced",
+              "nativeQueryRef": "Flood Displaced"
+            }
+          ]
+        },
         "X": {
           "projections": [
             {
@@ -46,7 +64,8 @@
                 }
               },
               "queryRef": "dw fact_disaster_event.Flood Events",
-              "nativeQueryRef": "Flood Events"
+              "nativeQueryRef": "Flood Events",
+              "active": true
             }
           ]
         },
@@ -65,24 +84,6 @@
               },
               "queryRef": "dw fact_disaster_event.Flood Deaths",
               "nativeQueryRef": "Flood Deaths"
-            }
-          ]
-        },
-        "Size": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dw fact_disaster_event"
-                    }
-                  },
-                  "Property": "Flood Displaced"
-                }
-              },
-              "queryRef": "dw fact_disaster_event.Flood Displaced",
-              "nativeQueryRef": "Flood Displaced"
             }
           ]
         }
@@ -109,13 +110,6 @@
       "categoryAxis": [
         {
           "properties": {
-            "axisScale": {
-              "expr": {
-                "Literal": {
-                  "Value": "'log'"
-                }
-              }
-            },
             "showAxisTitle": {
               "expr": {
                 "Literal": {
@@ -129,13 +123,6 @@
       "valueAxis": [
         {
           "properties": {
-            "axisScale": {
-              "expr": {
-                "Literal": {
-                  "Value": "'log'"
-                }
-              }
-            },
             "showAxisTitle": {
               "expr": {
                 "Literal": {

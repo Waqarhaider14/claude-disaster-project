@@ -219,19 +219,19 @@ table 'dw fact_disaster_event'
 		lineageTag: 9ac98774-92b9-4d9c-aca7-314e1fb25fe0
 
 	/// Distinct flood events (by GDACS id, removes duplicate flood records)
-	measure 'Flood Events' = CALCULATE(DISTINCTCOUNT('dw dim_flood'[gdacs_id]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+	measure 'Flood Events' = COUNTROWS(FILTER(SUMMARIZE('dw fact_disaster_event', 'dw dim_flood'[gdacs_id]), NOT ISBLANK('dw dim_flood'[gdacs_id])))
 		formatString: #,0
 		displayFolder: KPI\03 Human Impact
 		lineageTag: 87a2231e-8d01-4867-8cb1-35ef4e9259f3
 
 	/// Flood deaths, each GDACS flood event counted once
-	measure 'Flood Deaths' = CALCULATE(SUMX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[death]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+	measure 'Flood Deaths' = SUMX(FILTER(SUMMARIZE('dw fact_disaster_event', 'dw dim_flood'[gdacs_id]), NOT ISBLANK('dw dim_flood'[gdacs_id])), CALCULATE(MAX('dw dim_flood'[death])))
 		formatString: #,0
 		displayFolder: KPI\03 Human Impact
 		lineageTag: f551c2e2-756d-4310-bfe3-23478e6089cd
 
 	/// People displaced by floods, each GDACS flood event counted once
-	measure 'Flood Displaced' = CALCULATE(SUMX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[displaced]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+	measure 'Flood Displaced' = SUMX(FILTER(SUMMARIZE('dw fact_disaster_event', 'dw dim_flood'[gdacs_id]), NOT ISBLANK('dw dim_flood'[gdacs_id])), CALCULATE(MAX('dw dim_flood'[displaced])))
 		formatString: #,0
 		displayFolder: KPI\03 Human Impact
 		lineageTag: 7e061dab-ee59-4f33-ba18-394e02a2d631
@@ -248,44 +248,44 @@ table 'dw fact_disaster_event'
 		displayFolder: KPI\03 Human Impact
 		lineageTag: 00d31c38-6e54-4adb-a887-f06f9cc9a993
 
-	measure 'Avg Earthquake Magnitude' = CALCULATE(AVERAGE('dw dim_earthquake'[Magnitude]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+	measure 'Avg Earthquake Magnitude' = AVERAGEX(SUMMARIZE('dw fact_disaster_event', 'dw dim_earthquake'[disaster_event_id], 'dw dim_earthquake'[Magnitude]), 'dw dim_earthquake'[Magnitude])
 		formatString: 0.0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 68870e54-2aa0-4c97-83e4-951556f678ce
 
-	measure 'Max Earthquake Magnitude' = CALCULATE(MAX('dw dim_earthquake'[Magnitude]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+	measure 'Max Earthquake Magnitude' = MAXX(SUMMARIZE('dw fact_disaster_event', 'dw dim_earthquake'[disaster_event_id], 'dw dim_earthquake'[Magnitude]), 'dw dim_earthquake'[Magnitude])
 		formatString: 0.0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: f086da7a-db99-43f7-8cc9-00fb4b8fa361
 
 	/// Earthquakes of magnitude 6.0 or higher
-	measure 'Strong Earthquakes (M6+)' = CALCULATE(COUNTROWS('dw dim_earthquake'), 'dw dim_earthquake'[Magnitude] >= 6, CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_earthquake'[disaster_event_id], BOTH))
+	measure 'Strong Earthquakes (M6+)' = CALCULATE([Total Events], 'dw dim_earthquake'[Magnitude] >= 6)
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 2c23e1c0-e3cd-4d56-b5c0-8621947ef2ed
 
-	measure 'Avg Cyclone Wind Speed (km/h)' = CALCULATE(AVERAGE('dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+	measure 'Avg Cyclone Wind Speed (km/h)' = AVERAGEX(SUMMARIZE('dw fact_disaster_event', 'dw dim_tropical_cyclone'[disaster_event_id], 'dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), 'dw dim_tropical_cyclone'[Max Wind Speed (km/h)])
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 9c2bdbd9-428e-48da-84c0-bccaf97cffed
 
-	measure 'Max Cyclone Wind Speed (km/h)' = CALCULATE(MAX('dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+	measure 'Max Cyclone Wind Speed (km/h)' = MAXX(SUMMARIZE('dw fact_disaster_event', 'dw dim_tropical_cyclone'[disaster_event_id], 'dw dim_tropical_cyclone'[Max Wind Speed (km/h)]), 'dw dim_tropical_cyclone'[Max Wind Speed (km/h)])
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 0f80c049-60cf-46bd-81e2-b3ee99618e4a
 
 	/// Cyclones in category Extreme or Catastrophic
-	measure 'Severe Cyclones' = CALCULATE(COUNTROWS('dw dim_tropical_cyclone'), 'dw dim_tropical_cyclone'[category] IN {"Extreme", "Catastrophic"}, CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_tropical_cyclone'[disaster_event_id], BOTH))
+	measure 'Severe Cyclones' = CALCULATE([Total Events], 'dw dim_tropical_cyclone'[category] IN {"Extreme", "Catastrophic"})
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 9634ce7e-5dbb-4009-b8cb-5f37273f50e1
 
-	measure 'Total Burned Area (ha)' = CALCULATE(SUM('dw dim_wild_fire'[Burned Area (ha)]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_wild_fire'[disaster_event_id], BOTH))
+	measure 'Total Burned Area (ha)' = SUMX(SUMMARIZE('dw fact_disaster_event', 'dw dim_wild_fire'[disaster_event_id], 'dw dim_wild_fire'[Burned Area (ha)]), 'dw dim_wild_fire'[Burned Area (ha)])
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 429eef05-6697-4b6e-bf89-e2f728f73af8
 
-	measure 'Drought Affected Area (km²)' = CALCULATE(SUM('dw dim_drought'[effected_area_km2]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_drought'[disaster_event_id], BOTH))
+	measure 'Drought Affected Area (km²)' = SUMX(SUMMARIZE('dw fact_disaster_event', 'dw dim_drought'[disaster_event_id], 'dw dim_drought'[effected_area_km2]), 'dw dim_drought'[effected_area_km2])
 		formatString: #,0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: b1413d92-6987-47b8-b818-a464e15155bd
@@ -297,7 +297,7 @@ table 'dw fact_disaster_event'
 		lineageTag: 03232cc1-84fa-4b7c-b0ec-cfc04765122d
 
 	/// Highest Volcanic Explosivity Index (0-8)
-	measure 'Max Volcano VEI' = CALCULATE(MAX('dw dim_volcano'[VEI]), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_volcano'[disaster_event_id], BOTH))
+	measure 'Max Volcano VEI' = MAXX(SUMMARIZE('dw fact_disaster_event', 'dw dim_volcano'[disaster_event_id], 'dw dim_volcano'[VEI]), 'dw dim_volcano'[VEI])
 		formatString: 0
 		displayFolder: KPI\04 Hazard Severity
 		lineageTag: 2331d355-f87b-414e-9f69-005078abde0e
@@ -321,7 +321,7 @@ table 'dw fact_disaster_event'
 		lineageTag: bc32c684-3cfd-47ae-93b2-ffa8a74efe50
 
 	/// Deaths in the single deadliest flood event in context - shows how much one event drives the total
-	measure 'Deadliest Flood (Deaths)' = CALCULATE(MAXX(VALUES('dw dim_flood'[gdacs_id]), CALCULATE(MAX('dw dim_flood'[death]))), CROSSFILTER('dw fact_disaster_event'[disaster_event_id], 'dw dim_flood'[disaster_event_id], BOTH))
+	measure 'Deadliest Flood (Deaths)' = MAXX(FILTER(SUMMARIZE('dw fact_disaster_event', 'dw dim_flood'[gdacs_id]), NOT ISBLANK('dw dim_flood'[gdacs_id])), CALCULATE(MAX('dw dim_flood'[death])))
 		formatString: #,0
 		displayFolder: KPI\03 Human Impact
 		lineageTag: 799416d3-8143-4351-95a9-ce93b7e85727
@@ -358,6 +358,30 @@ table 'dw fact_disaster_event'
 		formatString: dd mmm yyyy
 		displayFolder: KPI\03 Human Impact
 		lineageTag: 4d9a7b35-2986-45ce-b5a9-06180394be60
+
+	/// Share of a hazard's events that start in each month (rows sum to 100%) - for the seasonality heatmap
+	measure 'Seasonality Share %' = DIVIDE([Total Events], CALCULATE([Total Events], REMOVEFILTERS('dw dim_date'[month], 'dw dim_date'[month_name])))
+		formatString: 0%
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: b08dd98e-c4e5-4919-90da-d8ae5ec43e67
+
+	/// Share of cyclones in category Extreme or Catastrophic
+	measure 'Severe Cyclone Share %' = DIVIDE([Severe Cyclones], CALCULATE([Total Events], 'dw dim_event_type'[event_type] = "TC"))
+		formatString: 0.0%
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: ecac0a3c-a51d-4070-b650-b204adcd5beb
+
+	/// Earthquake events with a known magnitude
+	measure 'Earthquake Events' = CALCULATE([Total Events], KEEPFILTERS(NOT ISBLANK('dw dim_earthquake'[Magnitude])))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: 1199f0be-389a-4d95-ad5a-b42a78610f05
+
+	/// Tropical cyclone events
+	measure 'Cyclone Events' = CALCULATE([Total Events], KEEPFILTERS('dw dim_event_type'[event_type] = "TC"))
+		formatString: #,0
+		displayFolder: KPI\04 Hazard Severity
+		lineageTag: fd6e9d51-4690-4af8-8b0d-8b27de2631dc
 
 	column fact_id
 		dataType: int64
