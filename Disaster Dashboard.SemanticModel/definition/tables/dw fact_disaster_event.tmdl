@@ -102,11 +102,13 @@ table 'dw fact_disaster_event'
 		formatString: +0.0%;-0.0%;0.0%
 		lineageTag: cce345a0-b680-410c-8b30-e6009c0b8d50
 
-	measure 'Affected Population YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
+	/// Population exposed year-to-date; multi-country events counted once (EQ/VO/WF only)
+	measure 'Affected Population YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([Population Exposed], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last),1,1) && 'dw dim_date'[full_date] <= _last))
 		formatString: #,0
 		lineageTag: b3377b0f-1fa5-41a1-ab8f-e9cfaebe03a9
 
-	measure 'Affected Population PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE(SUM('dw fact_disaster_event'[population_effected]), FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
+	/// Population exposed in the same period last year; multi-country events counted once (EQ/VO/WF only)
+	measure 'Affected Population PY YTD' = VAR _last = MAXX(LASTNONBLANK('dw dim_date'[full_date], [DisasterRecord]), 'dw dim_date'[full_date]) RETURN CALCULATE([Population Exposed], FILTER(ALL('dw dim_date'), 'dw dim_date'[full_date] >= DATE(YEAR(_last)-1,1,1) && 'dw dim_date'[full_date] <= EDATE(_last,-12)))
 		formatString: #,0
 		lineageTag: 0ded5fcf-2e82-48a3-88e5-0ac412c4d06a
 
