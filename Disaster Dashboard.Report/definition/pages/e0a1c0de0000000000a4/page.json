@@ -5,27 +5,6 @@
   "displayOption": "FitToPage",
   "height": 720,
   "width": 1280,
-  "pageBinding": {
-    "name": "e0a4binding000000001",
-    "type": "Drillthrough",
-    "referenceScope": "Default",
-    "parameters": [
-      {
-        "name": "e0a4param0000000001",
-        "boundFilter": "e0a4drillcountry0001",
-        "fieldExpr": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dw dim_location"
-              }
-            },
-            "Property": "country_location_name"
-          }
-        }
-      }
-    ]
-  },
   "filterConfig": {
     "filters": [
       {
@@ -45,7 +24,26 @@
       }
     ]
   },
-  "visibility": "HiddenInViewMode",
+  "pageBinding": {
+    "name": "e0a4binding000000001",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "e0a4param0000000001",
+        "boundFilter": "e0a4drillcountry0001",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dw dim_location"
+              }
+            },
+            "Property": "country_location_name"
+          }
+        }
+      }
+    ]
+  },
   "objects": {
     "background": [
       {
@@ -71,5 +69,6 @@
         }
       }
     ]
-  }
+  },
+  "visibility": "HiddenInViewMode"
 }

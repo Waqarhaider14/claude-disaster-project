@@ -32,6 +32,26 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.9
 			          }
+			        },
+			        {
+			          "Events": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "All events": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -46,6 +66,16 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "High alert events (Orange + Red)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
+			          "High alert events": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -611,6 +641,174 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "Month": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.global_risk_rank_label": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Global Risk Rank Label"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Global risk rank": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.most_frequent_hazard": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Most Frequent Hazard"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Most frequent hazard": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.peak_month": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Peak Month"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Peak month": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.disaster_event_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "disaster_event_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Event ID": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.event_alert_weight": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Event Alert Weight"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Alert score": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_fact_disaster_event.population_exposed": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw fact_disaster_event",
+			          "ConceptualProperty": "Population Exposed"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Population exposed": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_dim_date.full_date": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw dim_date",
+			          "ConceptualProperty": "full_date"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Start date": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "dw_dim_alert.alert_level": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dw dim_alert",
+			          "ConceptualProperty": "alert_level"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Alert": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
